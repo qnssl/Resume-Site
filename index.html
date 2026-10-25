@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Никита Кужель — код, графика и проекты</title>
+    <meta name="description" content="Портфолио Никиты Кужеля: код, моды, сайты, графика, 3D и работа с ИИ.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip" href="#projects">Перейти к проектам</a>
+<div class="progress" id="progress"></div>
+<div class="bg-orbs" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<header>
+    <div class="wrap">
+        <a class="logo" href="#top">Никита Кужель</a>
+        <nav id="main-nav" aria-label="Разделы">
+            <a href="#about">Обо мне</a>
+            <a href="#projects">Проекты</a>
+            <a href="#path">Путь</a>
+            <a href="#certs">Сертификаты</a>
+        </nav>
+        <button class="menu-btn" id="menu-btn" aria-label="Меню" aria-expanded="false" aria-controls="main-nav">☰</button>
+    </div>
+</header>
+
+<main class="wrap" id="top">
+
+    <div class="hero">
+        <div>
+            <h1>Код, графика и проекты</h1>
+            <p>Пишу на C#, Java и JavaScript, делаю сайты и моды, рисую пиксель-арт, собираю 3D в Blender. Нейросети использую как инструмент: результат всегда проверяю и дорабатываю сам.</p>
+            <div class="cta">
+                <a class="btn primary" href="assets/Nikita_Kuzhel_CV.pdf" target="_blank" rel="noopener">Скачать CV (PDF)</a>
+                <a class="btn" href="https://t.me/qnslll" target="_blank" rel="noopener">Написать в Telegram</a>
+                <a class="btn" href="https://github.com/qnssl" target="_blank" rel="noopener">GitHub</a>
+            </div>
+            <div class="facts">
+                <span class="tag">Unity и C#</span>
+                <span class="tag">Программирование на Java</span>
+                <span class="tag">Сайты: HTML, CSS, JavaScript</span>
+                <span class="tag">Вайб-кодинг и AI-assisted development</span>
+                <span class="tag">Презентации и документы</span>
+                <span class="tag">Графика: Photoshop и Illustrator</span>
+            </div>
+        </div>
+
+        <div class="game">
+            <div class="game-top"><span>Ловите навыки, обходите баги</span><span><span id="level">Ур. 1</span> · <b id="score">0</b></span></div>
+            <div class="game-wrap">
+                <canvas id="canvas" width="360" height="420" aria-label="Мини-игра: двигайте мышью, пальцем или стрелками"></canvas>
+                <div class="overlay" id="overlay">
+                    <p id="msg">Двигайте мышью, пальцем или стрелками. Красные баги с щупальцами ловить нельзя. Звёзды дают бонус, сердца возвращают жизнь.</p>
+                    <button class="btn primary" id="start">Играть</button>
+                </div>
+            </div>
+            <small id="best"></small>
+        </div>
+    </div>
+
+    <section id="about">
+        <h2>Обо мне</h2>
+        <div class="about">
+            <div class="about-text">
+                <p class="lead">В свободное время делаю Remember This — хоррор-головоломку на Unity. Это первая игра, за которую я взялся всерьёз: сцена, камера и движение игрока готовы, часть моделей с нарисованными вручную текстурами. Ещё делаю моды для программ и игр, рисую пиксель-арт.</p>
+                <p>Умело пользуюсь ИИ-инструментами: пишу код сам и занимаюсь вайб-кодингом. Результат всегда проверяю и довожу до рабочего состояния.</p>
+            </div>
+            <dl class="facts-list">
+                <div><dt>Стек</dt><dd class="chips"><span>Java</span><span>C#</span><span>JavaScript</span><span>HTML</span><span>CSS</span><span>Git</span><span>Unity</span><span>Fabric</span><span>Blender</span><span>Aseprite</span><span>Photoshop</span><span>Illustrator</span><span>PowerPoint</span><span>Power BI</span></dd></div>
+                <div><dt>ИИ-инструменты</dt><dd class="chips ai"><span>Claude</span><span>ChatGPT</span><span>Gemini</span><span>DeepSeek</span><span>Perplexity</span><span>NotebookLM</span><span>Codex</span><span>Recraft</span><span>Gamma</span><span>DeepL</span></dd></div>
+                <div><dt>Языки</dt><dd><ul class="langs">
+                    <li><b>Белорусский</b><span>родной</span></li>
+                    <li><b>Русский</b><span>C2</span></li>
+                    <li><b>Английский</b><span>B2</span></li>
+                    <li><b>Чешский</b><span>B2</span></li>
+                    <li><b>Словацкий</b><span>B1</span></li>
+                </ul></dd></div>
+                <div><dt>Образование</dt><dd>Университет Градца Кралове (Чехия), прикладная информатика.<p class="note">Сейчас временно не учусь, взял академический отпуск.</p></dd></div>
+            </dl>
+        </div>
+    </section>
+
+    <section id="projects">
+        <h2>Проекты</h2>
+        <div class="filters" role="group" aria-label="Фильтр проектов">
+            <button aria-pressed="true" data-f="all">Все</button>
+            <button aria-pressed="false" data-f="code">Код и моды</button>
+            <button aria-pressed="false" data-f="game">Игры</button>
+            <button aria-pressed="false" data-f="web">Сайты</button>
+            <button aria-pressed="false" data-f="pixel">Пиксель-арт</button>
+            <button aria-pressed="false" data-f="3d">3D-модели</button>
+            <button aria-pressed="false" data-f="photoshop">Photoshop</button>
+            <button aria-pressed="false" data-f="illustrator">Illustrator</button>
+        </div>
+        <div class="projects" id="projects-list"></div>
+    </section>
+
+    <section id="path">
+        <h2>Путь</h2>
+        <div class="tl">
+            <article>
+                <time>С 2025</time>
+                <h3>Университет Градца Кралове, Чехия</h3>
+                <p>Прикладная информатика, 1 год. Сейчас не обучаюсь (академический отпуск).</p>
+            </article>
+            <article>
+                <time>Февраль — июль 2025</time>
+                <h3>Сотрудник магазина и склада, DM drogerie markt</h3>
+                <p>Градец-Кралове, Чехия.</p>
+                <details><summary>Чем занимался</summary>
+                    <ul><li>приёмка, сортировка и размещение товара</li><li>подготовка товара к выкладке</li><li>порядок на складе и в рабочих зонах</li></ul>
+                </details>
+            </article>
+            <article>
+                <time>2024 — 2026</time>
+                <h3>Фриланс на Kwork</h3>
+                <p>Онлайн-заказы по визуалу в специальных программах, в том числе с нейросетями.</p>
+            </article>
+        </div>
+        <h3 class="sub">Повышение квалификации, курсы</h3>
+        <div class="tl courses">
+            <article>
+                <time>2026 — 2028</time>
+                <h3>Профессия 3D-визуализатор</h3>
+                <p>Skillbox · 3D-визуализация</p>
+            </article>
+            <article>
+                <time>2025 — 2027</time>
+                <h3>Профессия Разработчик игр на Unity с нуля до Middle</h3>
+                <p>Skillbox · Разработка игр на Unity (C#)</p>
+            </article>
+            <article>
+                <time>2026 — 2027</time>
+                <h3>Нейросети</h3>
+                <p>Skillbox · Работа с нейросетями</p>
+            </article>
+        </div>
+    </section>
+
+    <section id="certs">
+        <h2>Сертификаты и курсы</h2>
+        <div class="certs">
+            <a class="cert" href="https://github.com/qnssl/qnssl/blob/main/certificates/ibm-content-creation-genai.pdf" target="_blank" rel="noopener"><span>2026 · сертификат</span><h3>Content Creation with Generative AI</h3></a>
+            <a class="cert" href="https://github.com/qnssl/qnssl/blob/main/certificates/ibm-genai-final-assessment.pdf" target="_blank" rel="noopener"><span>2026 · сертификат</span><h3>Generative AI Content Creation, итоговая аттестация</h3></a>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <div class="wrap">
+        <div class="end">
+            <div>
+                <h2>Давайте работать вместе</h2>
+                <p>Ищу постоянную работу и проекты, где можно расти в IT и смежных областях.</p>
+            </div>
+            <div class="cta">
+                <a class="btn primary" href="assets/Nikita_Kuzhel_CV.pdf" target="_blank" rel="noopener">Открыть CV</a>
+                <a class="btn" href="mailto:kuzhalmikita@gmail.com">Написать на почту</a>
+                <a class="btn" href="https://t.me/qnslll" target="_blank" rel="noopener">Telegram</a>
+            </div>
+        </div>
+        <small class="copy">© 2026 Никита Кужель</small>
+    </div>
+</footer>
+
+<div class="gallery" id="gallery" hidden role="dialog" aria-modal="true" aria-label="Галерея">
+    <div class="g-head">
+        <button class="btn" id="g-back">← Назад на сайт</button>
+        <h2 id="g-title"></h2>
+    </div>
+    <p class="g-desc" id="g-text"></p>
+    <div class="mosaic" id="mosaic"></div>
+</div>
+
+<div class="lightbox" id="lightbox" hidden>
+    <button class="lb-btn lb-close" id="lb-close" aria-label="Закрыть">✕</button>
+    <button class="lb-btn lb-prev" id="lb-prev" aria-label="Предыдущее">‹</button>
+    <img id="lb-img" alt="">
+    <button class="lb-btn lb-next" id="lb-next" aria-label="Следующее">›</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/motion@11.18.2/dist/motion.js"></script>
+<script src="js/projects.js"></script>
+<script src="js/script.js"></script>
+<script src="js/animations.js"></script>
+</body>
+</html>
