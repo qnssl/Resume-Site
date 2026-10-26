@@ -14,33 +14,51 @@ const el = (tag, cls, text) => {
 };
 const safeUrl = u => (/^https:\/\//i.test(u) ? u : "");
 
+let curFilter = "all";
+
+function imgUrl(g, name) { return name.includes("/") ? name : g.dir + name; }
+
+function tryLoad(sources, onFound) {
+    if (!sources.length) return;
+    const probe = new Image();
+    probe.onload = () => onFound(sources[0]);
+    probe.onerror = () => tryLoad(sources.slice(1), onFound);
+    probe.src = sources[0];
+}
+
 function renderProjects(filter) {
+    curFilter = filter;
     list.replaceChildren();
     PROJECTS.filter(p => filter === "all" || p.cat.includes(filter)).forEach(p => {
+        const L = LANG === "en" && p.en ? p.en : {};
+        const title = L.title || p.title;
+        const text = L.text || p.text;
+        const label = L.label || p.label;
+        const status = L.status !== undefined ? L.status : p.status;
         const g = p.gallery ? GALLERIES[p.gallery] : null;
         const link = safeUrl(p.link);
-        let cover = p.cover;
-        if (!cover && g && g.images.length) cover = `url("${g.images[0]}")`;
-        if (!cover) cover = "linear-gradient(135deg,#34324a,#13121c)";
-        const isImg = cover.includes("url(");
         const card = el("article", "proj");
-        const cv = el("div", "cover" + (g && g.pixel ? " pix" : ""), isImg ? "" : p.label);
-        cv.style.backgroundImage = cover;
+        const cv = el("div", "cover" + (g && g.pixel ? " pix" : ""), label);
+        cv.style.backgroundImage = p.cover || "linear-gradient(135deg,#34324a,#13121c)";
+        const sources = [];
+        if (p.image) sources.push(p.image);
+        if (g && g.images.length) sources.push(imgUrl(g, g.images[0]));
+        tryLoad(sources, src => { cv.style.backgroundImage = `url("${src}")`; cv.textContent = ""; });
         const body = el("div", "body");
-        body.append(el("h3", "", p.title), el("p", "", p.text));
+        body.append(el("h3", "", title), el("p", "", text));
         const chips = el("div", "chips");
-        p.tags.forEach(t => chips.append(el("span", "", t)));
+        p.tags.forEach(tag => chips.append(el("span", "", tag)));
         body.append(chips);
         const act = el("div", "act");
-        if (p.status) act.append(el("span", "status", p.status));
+        if (status) act.append(el("span", "status", status));
         if (g) {
-            act.append(el("span", "count", g.images.length ? g.images.length + " работ" : "Скоро"));
-            const a = el("a", "link", "Открыть альбом");
+            act.append(el("span", "count", g.images.length ? g.images.length + " " + t("works") : t("soon")));
+            const a = el("a", "link", t("openAlbum"));
             a.href = "#";
             act.append(a);
         }
         if (link) {
-            const a = el("a", "link", "Открыть проект");
+            const a = el("a", "link", t("openProject"));
             a.href = link; a.target = "_blank"; a.rel = "noopener noreferrer";
             act.append(a);
         }
@@ -80,15 +98,16 @@ function openGallery(id) {
     const g = GALLERIES[id];
     if (!g) return;
     curG = g;
-    document.getElementById("g-title").textContent = g.title;
-    document.getElementById("g-text").textContent = g.text;
+    const L = LANG === "en" && g.en ? g.en : g;
+    document.getElementById("g-title").textContent = L.title;
+    document.getElementById("g-text").textContent = L.text;
     mosaic.replaceChildren();
-    if (!g.images.length) mosaic.append(el("p", "empty", "Здесь скоро появятся работы."));
-    g.images.forEach((src, i) => {
+    if (!g.images.length) mosaic.append(el("p", "empty", t("empty")));
+    g.images.forEach((name, i) => {
         const b = document.createElement("button");
-        b.setAttribute("aria-label", "Открыть изображение " + (i + 1));
+        b.setAttribute("aria-label", t("imgAria") + " " + (i + 1));
         const img = new Image();
-        img.src = src; img.alt = g.title + " " + (i + 1); img.loading = "lazy";
+        img.src = imgUrl(g, name); img.alt = L.title + " " + (i + 1); img.loading = "lazy";
         if (g.pixel) img.style.imageRendering = "pixelated";
         img.onload = () => { if (g.scale > 1) img.style.width = img.naturalWidth * g.scale + "px"; };
         b.style.transform = `rotate(${(Math.random() * 4 - 2).toFixed(1)}deg) translateY(${Math.round(Math.random() * 30 - 15)}px)`;
@@ -112,7 +131,7 @@ function openLightbox(i) {
             lbImg.style.width = lbImg.naturalWidth * k + "px";
         }
     };
-    lbImg.src = curG.images[curI];
+    lbImg.src = imgUrl(curG, curG.images[curI]);
     lightbox.hidden = false;
 }
 document.getElementById("g-back").onclick = closeGallery;
@@ -144,10 +163,10 @@ const BAD = "#ff6b81", GOLD = "#ffd966", HEART = "#ff9ecb";
 
 let best = 0;
 try { best = +localStorage.getItem("bestScore") || 0; } catch (e) {}
-const showBest = () => bestEl.textContent = best ? "Рекорд: " + best : "";
+const showBest = () => bestEl.textContent = best ? t("best") + best : "";
 showBest();
 
-let items, parts, floats, stars, player, score, lives, combo, level, stage, lastShift, running, last, spawnT;
+let items, parts, floats, stars, player, score, lives, combo, level, stage, lastShift, running, last, spawnT, lastEnd = null;
 
 function initStars() {
     stars = Array.from({ length: 45 }, () => ({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.4 + .3, v: 8 + Math.random() * 25 }));
@@ -158,7 +177,7 @@ function reset() {
     items = []; parts = []; floats = [];
     player = { x: W / 2, w: 70, h: 14 };
     score = 0; lives = 3; combo = 0; level = 1; stage = 0; lastShift = performance.now(); spawnT = 0;
-    scoreEl.textContent = 0; levelEl.textContent = "Ур. 1";
+    scoreEl.textContent = 0; levelEl.textContent = t("level") + " 1";
     setAccent(LEVEL_ACCENTS[0]);
     initStars();
 }
@@ -198,8 +217,8 @@ function addScore(n) {
     const lv = 1 + Math.floor(Math.sqrt(score / 6));
     if (lv > level) {
         level = lv;
-        levelEl.textContent = "Ур. " + level;
-        floatText(W / 2, H / 2, "Уровень " + level, "#ecebf5");
+        levelEl.textContent = t("level") + " " + level;
+        floatText(W / 2, H / 2, t("levelUp") + " " + level, "#ecebf5");
         const st = level - 1;
         if (st > stage && performance.now() - lastShift > 10000) {
             stage = st;
@@ -268,7 +287,7 @@ function draw() {
     ctx.restore();
     ctx.textAlign = "left"; ctx.fillStyle = BAD;
     ctx.fillText("♥".repeat(lives), 12, 20);
-    if (combo >= 3) { ctx.textAlign = "right"; ctx.fillStyle = GOLD; ctx.fillText("Комбо x" + Math.min(1 + Math.floor(combo / 5), 4), W - 12, 20); }
+    if (combo >= 3) { ctx.textAlign = "right"; ctx.fillStyle = GOLD; ctx.fillText(t("combo") + Math.min(1 + Math.floor(combo / 5), 4), W - 12, 20); }
 }
 
 function loop(t) {
@@ -293,7 +312,7 @@ function loop(t) {
             burst(it.x, it.y, BAD, 14); floatText(it.x, it.y - 20, "-1", BAD);
         } else if (it.type === "heart") {
             lives = Math.min(3, lives + 1);
-            burst(it.x, it.y, HEART, 10); floatText(it.x, it.y - 20, "+жизнь", HEART);
+            burst(it.x, it.y, HEART, 10); floatText(it.x, it.y - 20, t("life"), HEART);
         } else if (it.type === "star") {
             combo++; addScore(5);
             burst(it.x, it.y, GOLD, 16); floatText(it.x, it.y - 20, "+5", GOLD);
@@ -325,8 +344,8 @@ function end() {
     canvas.classList.remove("playing");
     if (score > best) { best = score; try { localStorage.setItem("bestScore", best); } catch (e) {} }
     showBest();
-    msg.textContent = "Счёт: " + score + ", уровень " + level + ". Ещё раз?";
-    document.getElementById("start").textContent = "Играть снова";
+    lastEnd = { score, level };
+    syncGameText();
     overlay.hidden = false;
 }
 
@@ -400,3 +419,14 @@ const spy = new IntersectionObserver(es => es.forEach(e => {
         a.setAttribute("aria-current", a.getAttribute("href") === "#" + e.target.id ? "true" : "false"));
 }), { rootMargin: "-40% 0px -55% 0px" });
 document.querySelectorAll("main section[id]").forEach(sec => spy.observe(sec));
+
+const startBtn = document.getElementById("start");
+function overText() { return t("over").replace("{s}", lastEnd.score).replace("{l}", lastEnd.level); }
+function syncGameText() {
+    startBtn.textContent = lastEnd ? t("again") : t("start");
+    msg.textContent = lastEnd ? overText() : t("intro");
+    levelEl.textContent = t("level") + " " + (level || 1);
+    showBest();
+}
+document.addEventListener("langchange", () => { renderProjects(curFilter); syncGameText(); });
+syncGameText();

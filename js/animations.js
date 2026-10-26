@@ -11,23 +11,6 @@
     });
 
     if (A && !reduce) {
-        const h1 = document.querySelector(".hero h1");
-        h1.setAttribute("aria-label", h1.textContent);
-        const words = h1.textContent.split(" ");
-        h1.replaceChildren();
-        words.forEach((w, i) => {
-            const ws = document.createElement("span");
-            ws.className = "w" + (i === 1 ? " hl" : "");
-            ws.setAttribute("aria-hidden", "true");
-            [...w].forEach(c => {
-                const cs = document.createElement("span");
-                cs.className = "ch";
-                cs.textContent = c;
-                ws.append(cs);
-            });
-            h1.append(ws);
-            if (i < words.length - 1) h1.append(" ");
-        });
 
         const targets = ".hero h1 .ch, .hero p, .hero .cta .btn, .facts .tag, .game";
         A.set(targets, { opacity: 0 });

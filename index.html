@@ -10,20 +10,23 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<a class="skip" href="#projects">Перейти к проектам</a>
+<a class="skip" href="#projects" data-i18n="skip">Перейти к проектам</a>
 <div class="progress" id="progress"></div>
 <div class="bg-orbs" aria-hidden="true"><i></i><i></i><i></i></div>
 
 <header>
     <div class="wrap">
-        <a class="logo" href="#top">Никита Кужель</a>
-        <nav id="main-nav" aria-label="Разделы">
-            <a href="#about">Обо мне</a>
-            <a href="#projects">Проекты</a>
-            <a href="#path">Путь</a>
-            <a href="#certs">Сертификаты</a>
+        <a class="logo" href="#top" data-i18n="name">Никита Кужель</a>
+        <nav id="main-nav" aria-label="Разделы" data-i18n-aria="navAria">
+            <a href="#about" data-i18n="about">Обо мне</a>
+            <a href="#projects" data-i18n="projects">Проекты</a>
+            <a href="#path" data-i18n="path">Путь</a>
+            <a href="#certs" data-i18n="certs">Сертификаты</a>
         </nav>
-        <button class="menu-btn" id="menu-btn" aria-label="Меню" aria-expanded="false" aria-controls="main-nav">☰</button>
+        <div class="tools">
+            <button class="lang-btn" id="lang-btn" type="button">EN</button>
+            <button class="menu-btn" id="menu-btn" aria-label="Меню" data-i18n-aria="menuAria" aria-expanded="false" aria-controls="main-nav">☰</button>
+        </div>
     </div>
 </header>
 
@@ -31,27 +34,27 @@
 
     <div class="hero">
         <div>
-            <h1>Код, графика и проекты</h1>
-            <p>Пишу на C#, Java и JavaScript, делаю сайты и моды, рисую пиксель-арт, собираю 3D в Blender. Нейросети использую как инструмент: результат всегда проверяю и дорабатываю сам.</p>
+            <h1 data-i18n="heroTitle" data-split>Код, графика и проекты</h1>
+            <p data-i18n="heroText">Пишу на C#, Java и JavaScript, делаю сайты и моды, рисую пиксель-арт, собираю 3D в Blender. Нейросети использую как инструмент: результат всегда проверяю и дорабатываю сам.</p>
             <div class="cta">
-                <a class="btn primary" href="assets/Nikita_Kuzhel_CV.pdf" target="_blank" rel="noopener noreferrer">Скачать CV (PDF)</a>
-                <a class="btn" href="https://t.me/qnslll" target="_blank" rel="noopener noreferrer">Написать в Telegram</a>
+                <a class="btn primary" href="assets/Nikita_Kuzhel_CV.pdf" target="_blank" rel="noopener noreferrer" data-i18n="cvBtn">Скачать CV (PDF)</a>
+                <a class="btn" href="https://t.me/qnslll" target="_blank" rel="noopener noreferrer" data-i18n="tg">Написать в Telegram</a>
                 <a class="btn" href="https://github.com/qnssl" target="_blank" rel="noopener noreferrer">GitHub</a>
             </div>
             <div class="facts">
-                <span class="tag">Unity и C#</span>
-                <span class="tag">Программирование на Java</span>
-                <span class="tag">Сайты: HTML, CSS, JavaScript</span>
-                <span class="tag">Вайб-кодинг и AI-assisted development</span>
-                <span class="tag">Презентации и документы</span>
-                <span class="tag">Графика: Photoshop и Illustrator</span>
+                <span class="tag" data-i18n="tag1">Unity и C#</span>
+                <span class="tag" data-i18n="tag2">Программирование на Java</span>
+                <span class="tag" data-i18n="tag3">Сайты: HTML, CSS, JavaScript</span>
+                <span class="tag" data-i18n="tag4">Вайб-кодинг и AI-assisted development</span>
+                <span class="tag" data-i18n="tag5">Презентации и документы</span>
+                <span class="tag" data-i18n="tag6">Графика: Photoshop и Illustrator</span>
             </div>
         </div>
 
         <div class="game">
-            <div class="game-top"><span>Ловите навыки, обходите баги</span><span><span id="level">Ур. 1</span> · <b id="score">0</b></span></div>
+            <div class="game-top"><span data-i18n="gameTitle">Ловите навыки, обходите баги</span><span><span id="level">Ур. 1</span> · <b id="score">0</b></span></div>
             <div class="game-wrap">
-                <canvas id="canvas" width="360" height="420" aria-label="Мини-игра: двигайте мышью, пальцем или стрелками"></canvas>
+                <canvas id="canvas" width="360" height="420" aria-label="Мини-игра: двигайте мышью, пальцем или стрелками" data-i18n-aria="canvasAria"></canvas>
                 <div class="overlay" id="overlay">
                     <p id="msg">Двигайте мышью, пальцем или стрелками. Красные баги с щупальцами ловить нельзя. Звёзды дают бонус, сердца возвращают жизнь.</p>
                     <button class="btn primary" id="start">Играть</button>
@@ -62,36 +65,36 @@
     </div>
 
     <section id="about">
-        <h2>Обо мне</h2>
+        <h2 data-i18n="about">Обо мне</h2>
         <div class="about">
             <div class="about-text">
-                <p class="lead">В свободное время делаю Remember This — хоррор-головоломку на Unity. Это первая игра, за которую я взялся всерьёз: сцена, камера и движение игрока готовы, часть моделей с нарисованными вручную текстурами. Ещё делаю моды для программ и игр, рисую пиксель-арт.</p>
-                <p>Умело пользуюсь ИИ-инструментами: пишу код сам и занимаюсь вайб-кодингом. Результат всегда проверяю и довожу до рабочего состояния.</p>
+                <p class="lead" data-i18n="lead">В свободное время делаю Remember This — хоррор-головоломку на Unity. Это первая игра, за которую я взялся всерьёз: сцена, камера и движение игрока готовы, часть моделей с нарисованными вручную текстурами. Ещё делаю моды для программ и игр, рисую пиксель-арт.</p>
+                <p data-i18n="aiText">Умело пользуюсь ИИ-инструментами: пишу код сам и занимаюсь вайб-кодингом. Результат всегда проверяю и довожу до рабочего состояния.</p>
             </div>
             <dl class="facts-list">
-                <div><dt>Стек</dt><dd class="chips"><span>Java</span><span>C#</span><span>JavaScript</span><span>HTML</span><span>CSS</span><span>Git</span><span>Unity</span><span>Fabric</span><span>Blender</span><span>Aseprite</span><span>Photoshop</span><span>Illustrator</span><span>PowerPoint</span><span>Power BI</span></dd></div>
-                <div><dt>ИИ-инструменты</dt><dd class="chips ai"><span>Claude</span><span>ChatGPT</span><span>Gemini</span><span>DeepSeek</span><span>Perplexity</span><span>NotebookLM</span><span>Codex</span><span>Recraft</span><span>Gamma</span><span>DeepL</span></dd></div>
-                <div><dt>Языки</dt><dd><ul class="langs">
-                    <li><b>Белорусский</b><span>родной</span></li>
-                    <li><b>Русский</b><span>C2</span></li>
-                    <li><b>Английский</b><span>B2</span></li>
-                    <li><b>Чешский</b><span>B2</span></li>
-                    <li><b>Словацкий</b><span>B1</span></li>
+                <div><dt data-i18n="stack">Стек</dt><dd class="chips"><span>Java</span><span>C#</span><span>JavaScript</span><span>HTML</span><span>CSS</span><span>Git</span><span>Unity</span><span>Fabric</span><span>Blender</span><span>Aseprite</span><span>Photoshop</span><span>Illustrator</span><span>PowerPoint</span><span>Power BI</span></dd></div>
+                <div><dt data-i18n="aiTools">ИИ-инструменты</dt><dd class="chips ai"><span>Claude</span><span>ChatGPT</span><span>Gemini</span><span>DeepSeek</span><span>Perplexity</span><span>NotebookLM</span><span>Codex</span><span>Recraft</span><span>Gamma</span><span>DeepL</span></dd></div>
+                <div><dt data-i18n="languages">Языки</dt><dd><ul class="langs">
+                    <li><b data-i18n="lBe">Белорусский</b><span data-i18n="native">родной</span></li>
+                    <li><b data-i18n="lRu">Русский</b><span>C2</span></li>
+                    <li><b data-i18n="lEn">Английский</b><span>B2</span></li>
+                    <li><b data-i18n="lCs">Чешский</b><span>B2</span></li>
+                    <li><b data-i18n="lSk">Словацкий</b><span>B1</span></li>
                 </ul></dd></div>
-                <div><dt>Образование</dt><dd>Университет Градца Кралове (Чехия), прикладная информатика.<p class="note">Сейчас временно не учусь, взял академический отпуск.</p></dd></div>
+                <div><dt data-i18n="education">Образование</dt><dd><span data-i18n="edu1">Университет Градца Кралове (Чехия), прикладная информатика.</span><p class="note" data-i18n="eduNote">Сейчас временно не учусь, взял академический отпуск.</p></dd></div>
             </dl>
         </div>
     </section>
 
     <section id="projects">
-        <h2>Проекты</h2>
-        <div class="filters" role="group" aria-label="Фильтр проектов">
-            <button aria-pressed="true" data-f="all">Все</button>
-            <button aria-pressed="false" data-f="code">Код и моды</button>
-            <button aria-pressed="false" data-f="game">Игры</button>
-            <button aria-pressed="false" data-f="web">Сайты</button>
-            <button aria-pressed="false" data-f="pixel">Пиксель-арт</button>
-            <button aria-pressed="false" data-f="3d">3D-модели</button>
+        <h2 data-i18n="projects">Проекты</h2>
+        <div class="filters" role="group" aria-label="Фильтр проектов" data-i18n-aria="filterAria">
+            <button aria-pressed="true" data-f="all" data-i18n="fAll">Все</button>
+            <button aria-pressed="false" data-f="code" data-i18n="fCode">Код и моды</button>
+            <button aria-pressed="false" data-f="game" data-i18n="fGames">Игры</button>
+            <button aria-pressed="false" data-f="web" data-i18n="fWeb">Сайты</button>
+            <button aria-pressed="false" data-f="pixel" data-i18n="fPixel">Пиксель-арт</button>
+            <button aria-pressed="false" data-f="3d" data-i18n="f3d">3D-модели</button>
             <button aria-pressed="false" data-f="photoshop">Photoshop</button>
             <button aria-pressed="false" data-f="illustrator">Illustrator</button>
         </div>
@@ -99,52 +102,52 @@
     </section>
 
     <section id="path">
-        <h2>Путь</h2>
+        <h2 data-i18n="path">Путь</h2>
         <div class="tl">
             <article>
-                <time>С 2025</time>
-                <h3>Университет Градца Кралове, Чехия</h3>
-                <p>Прикладная информатика, 1 год. Сейчас не обучаюсь (академический отпуск).</p>
+                <time data-i18n="since2025">С 2025</time>
+                <h3 data-i18n="uhk">Университет Градца Кралове, Чехия</h3>
+                <p data-i18n="uhkText">Прикладная информатика, 1 год. Сейчас не обучаюсь (академический отпуск).</p>
             </article>
             <article>
-                <time>Февраль — июль 2025</time>
-                <h3>Сотрудник магазина и склада, DM drogerie markt</h3>
-                <p>Градец-Кралове, Чехия.</p>
-                <details><summary>Чем занимался</summary>
-                    <ul><li>приёмка, сортировка и размещение товара</li><li>подготовка товара к выкладке</li><li>порядок на складе и в рабочих зонах</li></ul>
+                <time data-i18n="dmDates">Февраль — июль 2025</time>
+                <h3 data-i18n="dm">Сотрудник магазина и склада, DM drogerie markt</h3>
+                <p data-i18n="hk">Градец-Кралове, Чехия.</p>
+                <details><summary data-i18n="whatIDid">Чем занимался</summary>
+                    <ul><li data-i18n="dm1">приёмка, сортировка и размещение товара</li><li data-i18n="dm2">подготовка товара к выкладке</li><li data-i18n="dm3">порядок на складе и в рабочих зонах</li></ul>
                 </details>
             </article>
             <article>
                 <time>2024 — 2026</time>
-                <h3>Фриланс на Kwork</h3>
-                <p>Онлайн-заказы по визуалу в специальных программах, в том числе с нейросетями.</p>
+                <h3 data-i18n="kwork">Фриланс на Kwork</h3>
+                <p data-i18n="kworkText">Онлайн-заказы по визуалу в специальных программах, в том числе с нейросетями.</p>
             </article>
         </div>
-        <h3 class="sub">Повышение квалификации, курсы</h3>
+        <h3 class="sub" data-i18n="courses">Повышение квалификации, курсы</h3>
         <div class="tl courses">
             <article>
                 <time>2026 — 2028</time>
-                <h3>Профессия 3D-визуализатор</h3>
-                <p>Skillbox · 3D-визуализация</p>
+                <h3 data-i18n="c3d">Профессия 3D-визуализатор</h3>
+                <p data-i18n="c3dText">Skillbox · 3D-визуализация</p>
             </article>
             <article>
                 <time>2025 — 2027</time>
-                <h3>Профессия Разработчик игр на Unity с нуля до Middle</h3>
-                <p>Skillbox · Разработка игр на Unity (C#)</p>
+                <h3 data-i18n="cUnity">Профессия Разработчик игр на Unity с нуля до Middle</h3>
+                <p data-i18n="cUnityText">Skillbox · Разработка игр на Unity (C#)</p>
             </article>
             <article>
                 <time>2026 — 2027</time>
-                <h3>Нейросети</h3>
-                <p>Skillbox · Работа с нейросетями</p>
+                <h3 data-i18n="cAi">Нейросети</h3>
+                <p data-i18n="cAiText">Skillbox · Работа с нейросетями</p>
             </article>
         </div>
     </section>
 
     <section id="certs">
-        <h2>Сертификаты и курсы</h2>
+        <h2 data-i18n="certsTitle">Сертификаты и курсы</h2>
         <div class="certs">
-            <a class="cert" href="https://github.com/qnssl/qnssl/blob/main/certificates/ibm-content-creation-genai.pdf" target="_blank" rel="noopener noreferrer"><span>2026 · сертификат</span><h3>Content Creation with Generative AI</h3></a>
-            <a class="cert" href="https://github.com/qnssl/qnssl/blob/main/certificates/ibm-genai-final-assessment.pdf" target="_blank" rel="noopener noreferrer"><span>2026 · сертификат</span><h3>Generative AI Content Creation, итоговая аттестация</h3></a>
+            <a class="cert" href="https://github.com/qnssl/qnssl/blob/main/certificates/ibm-content-creation-genai.pdf" target="_blank" rel="noopener noreferrer"><span data-i18n="cert2026">2026 · сертификат</span><h3>Content Creation with Generative AI</h3></a>
+            <a class="cert" href="https://github.com/qnssl/qnssl/blob/main/certificates/ibm-genai-final-assessment.pdf" target="_blank" rel="noopener noreferrer"><span data-i18n="cert2026">2026 · сертификат</span><h3 data-i18n="certFinal">Generative AI Content Creation</h3></a>
         </div>
     </section>
 
@@ -154,22 +157,22 @@
     <div class="wrap">
         <div class="end">
             <div>
-                <h2>Давайте работать вместе</h2>
-                <p>Ищу постоянную работу и проекты, где можно расти в IT и смежных областях.</p>
+                <h2 data-i18n="cta">Давайте работать вместе</h2>
+                <p data-i18n="ctaText">Ищу постоянную работу и проекты, где можно расти в IT и смежных областях.</p>
             </div>
             <div class="cta">
-                <a class="btn primary" href="assets/Nikita_Kuzhel_CV.pdf" target="_blank" rel="noopener noreferrer">Открыть CV</a>
-                <a class="btn" href="mailto:kuzhalmikita@gmail.com">Написать на почту</a>
+                <a class="btn primary" href="assets/Nikita_Kuzhel_CV.pdf" target="_blank" rel="noopener noreferrer" data-i18n="cvOpen">Открыть CV</a>
+                <a class="btn" href="mailto:kuzhalmikita@gmail.com" data-i18n="mail">Написать на почту</a>
                 <a class="btn" href="https://t.me/qnslll" target="_blank" rel="noopener noreferrer">Telegram</a>
             </div>
         </div>
-        <small class="copy">© 2026 Никита Кужель</small>
+        <small class="copy" data-i18n="copy">© 2026 Никита Кужель</small>
     </div>
 </footer>
 
-<div class="gallery" id="gallery" hidden role="dialog" aria-modal="true" aria-label="Галерея">
+<div class="gallery" id="gallery" hidden role="dialog" aria-modal="true" aria-label="Галерея" data-i18n-aria="galleryAria">
     <div class="g-head">
-        <button class="btn" id="g-back">← Назад на сайт</button>
+        <button class="btn" id="g-back" data-i18n="back">← Назад на сайт</button>
         <h2 id="g-title"></h2>
     </div>
     <p class="g-desc" id="g-text"></p>
@@ -177,15 +180,16 @@
 </div>
 
 <div class="lightbox" id="lightbox" hidden>
-    <button class="lb-btn lb-close" id="lb-close" aria-label="Закрыть">✕</button>
-    <button class="lb-btn lb-prev" id="lb-prev" aria-label="Предыдущее">‹</button>
+    <button class="lb-btn lb-close" id="lb-close" aria-label="Закрыть" data-i18n-aria="closeAria">✕</button>
+    <button class="lb-btn lb-prev" id="lb-prev" aria-label="Предыдущее" data-i18n-aria="prevAria">‹</button>
     <img id="lb-img" alt="">
-    <button class="lb-btn lb-next" id="lb-next" aria-label="Следующее">›</button>
+    <button class="lb-btn lb-next" id="lb-next" aria-label="Следующее" data-i18n-aria="nextAria">›</button>
 </div>
 
 <script src="js/vendor/anime.min.js"></script>
 <script src="js/vendor/motion.js"></script>
 <script src="js/projects.js"></script>
+<script src="js/i18n.js"></script>
 <script src="js/script.js"></script>
 <script src="js/animations.js"></script>
 </body>
