@@ -1,10 +1,7 @@
-/* Анимации: Anime.js (появление, фон) и Motion (пружины, магнит, параллакс).
-   Если библиотеки не загрузились, сайт работает без них. */
 (function () {
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const A = window.anime, M = window.Motion;
 
-    /* Подсветка строк за курсором (без библиотек) */
     document.addEventListener("pointermove", e => {
         const c = e.target.closest && e.target.closest(".proj");
         if (!c) return;
@@ -13,13 +10,24 @@
         c.style.setProperty("--my", e.clientY - r.top + "px");
     });
 
-    /* ---------- Anime.js ---------- */
     if (A && !reduce) {
         const h1 = document.querySelector(".hero h1");
         h1.setAttribute("aria-label", h1.textContent);
-        h1.innerHTML = h1.textContent.split(" ")
-            .map((w, i) => `<span class="w${i === 1 ? " hl" : ""}" aria-hidden="true">${[...w].map(c => `<span class="ch">${c}</span>`).join("")}</span>`)
-            .join(" ");
+        const words = h1.textContent.split(" ");
+        h1.replaceChildren();
+        words.forEach((w, i) => {
+            const ws = document.createElement("span");
+            ws.className = "w" + (i === 1 ? " hl" : "");
+            ws.setAttribute("aria-hidden", "true");
+            [...w].forEach(c => {
+                const cs = document.createElement("span");
+                cs.className = "ch";
+                cs.textContent = c;
+                ws.append(cs);
+            });
+            h1.append(ws);
+            if (i < words.length - 1) h1.append(" ");
+        });
 
         const targets = ".hero h1 .ch, .hero p, .hero .cta .btn, .facts .tag, .game";
         A.set(targets, { opacity: 0 });
@@ -53,20 +61,17 @@
         });
     }
 
-    /* ---------- Motion ---------- */
     if (M && M.hover && M.animate && !reduce) {
         const spring = { type: "spring", stiffness: 320, damping: 22 };
         const shift = (el, to) => M.hover(el, () => {
             M.animate(el, to, spring);
             return () => M.animate(el, { x: 0, y: 0, scale: 1 }, spring);
         });
-        // карточки проектов слегка приподнимаются, строки сертификатов сдвигаются вправо
         window.onCardRender = el => shift(el, { y: -5, scale: 1.015 });
         document.querySelectorAll(".proj").forEach(window.onCardRender);
         document.querySelectorAll(".cert").forEach(el => shift(el, { x: 8 }));
         document.querySelectorAll(".tag").forEach(el => shift(el, { y: -2, scale: 1.04 }));
 
-        // главная кнопка «магнитится» к курсору, остальные кнопки пружинят
         document.querySelectorAll(".btn").forEach(el => {
             if (el.matches(".hero .btn.primary")) {
                 el.addEventListener("pointermove", e => {

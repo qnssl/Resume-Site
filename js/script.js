@@ -1,4 +1,3 @@
-/* ---------- Проекты, фильтры, появление блоков ---------- */
 const list = document.getElementById("projects-list");
 const filterBtns = document.querySelectorAll(".filters button");
 
@@ -7,30 +6,51 @@ const io = new IntersectionObserver(entries => entries.forEach(e => {
 }), { threshold: 0.12 });
 const reveal = el => { el.classList.add("reveal"); io.observe(el); };
 
+const el = (tag, cls, text) => {
+    const n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text !== undefined) n.textContent = text;
+    return n;
+};
+const safeUrl = u => (/^https:\/\//i.test(u) ? u : "");
+
 function renderProjects(filter) {
-    list.innerHTML = "";
+    list.replaceChildren();
     PROJECTS.filter(p => filter === "all" || p.cat.includes(filter)).forEach(p => {
         const g = p.gallery ? GALLERIES[p.gallery] : null;
+        const link = safeUrl(p.link);
         let cover = p.cover;
         if (!cover && g && g.images.length) cover = `url("${g.images[0]}")`;
         if (!cover) cover = "linear-gradient(135deg,#34324a,#13121c)";
         const isImg = cover.includes("url(");
-        const card = document.createElement("article");
-        card.className = "proj";
-        card.innerHTML =
-            `<div class="cover${g && g.pixel ? " pix" : ""}" style="background-image:${cover}">${isImg ? "" : p.label}</div>` +
-            `<div class="body"><h3>${p.title}</h3><p>${p.text}</p><div class="chips">${p.tags.map(t => `<span>${t}</span>`).join("")}</div></div>` +
-            `<div class="act">` +
-            (p.status ? `<span class="status">${p.status}</span>` : "") +
-            (g ? `<span class="count">${g.images.length ? g.images.length + " работ" : "Скоро"}</span><a class="link" href="#">Открыть альбом</a>` : "") +
-            (p.link ? `<a class="link" href="${p.link}" target="_blank" rel="noopener">Открыть проект</a>` : "") +
-            `</div>`;
+        const card = el("article", "proj");
+        const cv = el("div", "cover" + (g && g.pixel ? " pix" : ""), isImg ? "" : p.label);
+        cv.style.backgroundImage = cover;
+        const body = el("div", "body");
+        body.append(el("h3", "", p.title), el("p", "", p.text));
+        const chips = el("div", "chips");
+        p.tags.forEach(t => chips.append(el("span", "", t)));
+        body.append(chips);
+        const act = el("div", "act");
+        if (p.status) act.append(el("span", "status", p.status));
+        if (g) {
+            act.append(el("span", "count", g.images.length ? g.images.length + " работ" : "Скоро"));
+            const a = el("a", "link", "Открыть альбом");
+            a.href = "#";
+            act.append(a);
+        }
+        if (link) {
+            const a = el("a", "link", "Открыть проект");
+            a.href = link; a.target = "_blank"; a.rel = "noopener noreferrer";
+            act.append(a);
+        }
+        card.append(cv, body, act);
         if (g) {
             card.dataset.gallery = p.gallery;
             card.addEventListener("click", e => { e.preventDefault(); openGallery(p.gallery); });
-        } else if (p.link) {
+        } else if (link) {
             card.classList.add("clickable");
-            card.addEventListener("click", e => { if (!e.target.closest("a")) window.open(p.link, "_blank", "noopener"); });
+            card.addEventListener("click", e => { if (!e.target.closest("a")) window.open(link, "_blank", "noopener,noreferrer"); });
         }
         list.appendChild(card);
         reveal(card);
@@ -44,14 +64,12 @@ filterBtns.forEach(b => b.addEventListener("click", () => {
 renderProjects("all");
 document.querySelectorAll("h2, .about-text, .facts-list > div, .cert, .tl article, .end").forEach(reveal);
 
-/* ---------- Полоса прокрутки ---------- */
 const bar = document.getElementById("progress");
 addEventListener("scroll", () => {
     const h = document.documentElement.scrollHeight - innerHeight;
     bar.style.width = (h > 0 ? scrollY / h * 100 : 0) + "%";
 }, { passive: true });
 
-/* ---------- Альбомы и просмотр на весь экран ---------- */
 const galleryEl = document.getElementById("gallery");
 const mosaic = document.getElementById("mosaic");
 const lightbox = document.getElementById("lightbox");
@@ -64,7 +82,8 @@ function openGallery(id) {
     curG = g;
     document.getElementById("g-title").textContent = g.title;
     document.getElementById("g-text").textContent = g.text;
-    mosaic.innerHTML = g.images.length ? "" : '<p class="empty">Здесь скоро появятся работы.</p>';
+    mosaic.replaceChildren();
+    if (!g.images.length) mosaic.append(el("p", "empty", "Здесь скоро появятся работы."));
     g.images.forEach((src, i) => {
         const b = document.createElement("button");
         b.setAttribute("aria-label", "Открыть изображение " + (i + 1));
@@ -109,7 +128,6 @@ addEventListener("keydown", e => {
     } else if (!galleryEl.hidden && e.key === "Escape") closeGallery();
 });
 
-/* ---------- Мини-игра: ловите навыки, обходите баги ---------- */
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const overlay = document.getElementById("overlay");
@@ -121,7 +139,7 @@ const W = canvas.width, H = canvas.height;
 
 const GOOD = ["C#", "Java", "Unity", "Blender", "Git", "HTML", "CSS", "JavaScript", "Claude", "Recraft"];
 const COLORS = ["#8f83ff", "#ffb454", "#4ade80", "#60a5fa"];
-const LEVEL_ACCENTS = ["#8f83ff", "#60a5fa", "#4ade80", "#ffb454", "#ff9ecb"]; // соседние цвета переходят друг в друга мягче
+const LEVEL_ACCENTS = ["#8f83ff", "#60a5fa", "#4ade80", "#ffb454", "#ff9ecb"];
 const BAD = "#ff6b81", GOLD = "#ffd966", HEART = "#ff9ecb";
 
 let best = 0;
@@ -177,13 +195,11 @@ function pulseChip(text) {
 function addScore(n) {
     score += n;
     scoreEl.textContent = score;
-    // уровни идут всё реже: 6, 24, 54, 96 очков и так далее
     const lv = 1 + Math.floor(Math.sqrt(score / 6));
     if (lv > level) {
         level = lv;
         levelEl.textContent = "Ур. " + level;
         floatText(W / 2, H / 2, "Уровень " + level, "#ecebf5");
-        // цвет сайта меняется с каждым уровнем, но не чаще, чем раз в 10 секунд
         const st = level - 1;
         if (st > stage && performance.now() - lastShift > 10000) {
             stage = st;
@@ -195,9 +211,7 @@ function addScore(n) {
 
 function pill(x, y, w, h, r) { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); }
 
-
 function dot(x, y, r, color) { ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fillStyle = color; ctx.fill(); }
-// Баг: красная пилюля "bug" со злыми глазами, антеннами и извивающимися щупальцами
 function drawBug(it) {
     const w = it.w, h = it.h, t = performance.now() / 180;
     ctx.save();
@@ -332,7 +346,6 @@ document.getElementById("start").addEventListener("click", start);
 
 reset(); draw();
 
-/* ---------- Плавная прокрутка колесиком и по меню ---------- */
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 let sTarget = scrollY, sCurrent = scrollY, sRaf = null;
 const sMax = () => document.documentElement.scrollHeight - innerHeight;
@@ -365,7 +378,6 @@ document.addEventListener("click", e => {
     smoothTo(a.getAttribute("href") === "#top" ? 0 : el.getBoundingClientRect().top + scrollY - 72);
 });
 
-/* ---------- Мобильное меню ---------- */
 const menuBtn = document.getElementById("menu-btn");
 const navEl = document.getElementById("main-nav");
 const closeMenu = () => { navEl.classList.remove("open"); menuBtn.setAttribute("aria-expanded", "false"); };
@@ -373,7 +385,6 @@ menuBtn.addEventListener("click", () => menuBtn.setAttribute("aria-expanded", na
 navEl.querySelectorAll("a").forEach(a => a.addEventListener("click", closeMenu));
 addEventListener("resize", () => { if (innerWidth > 860) closeMenu(); });
 
-/* ---------- Свайп в просмотре на весь экран ---------- */
 let touchX = null;
 lightbox.addEventListener("touchstart", e => { touchX = e.touches[0].clientX; }, { passive: true });
 lightbox.addEventListener("touchend", e => {
@@ -383,7 +394,6 @@ lightbox.addEventListener("touchend", e => {
     if (Math.abs(dx) > 50) openLightbox(curI + (dx < 0 ? 1 : -1));
 });
 
-/* ---------- Подсветка текущего раздела в меню ---------- */
 const spy = new IntersectionObserver(es => es.forEach(e => {
     if (!e.isIntersecting) return;
     document.querySelectorAll("header nav a").forEach(a =>

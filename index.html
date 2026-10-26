@@ -3,11 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'none'; object-src 'none'">
+    <meta name="referrer" content="no-referrer">
     <title>Никита Кужель — код, графика и проекты</title>
     <meta name="description" content="Портфолио Никиты Кужеля: код, моды, сайты, графика, 3D и работа с ИИ.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -35,9 +34,9 @@
             <h1>Код, графика и проекты</h1>
             <p>Пишу на C#, Java и JavaScript, делаю сайты и моды, рисую пиксель-арт, собираю 3D в Blender. Нейросети использую как инструмент: результат всегда проверяю и дорабатываю сам.</p>
             <div class="cta">
-                <a class="btn primary" href="assets/Nikita_Kuzhel_CV.pdf" target="_blank" rel="noopener">Скачать CV (PDF)</a>
-                <a class="btn" href="https://t.me/qnslll" target="_blank" rel="noopener">Написать в Telegram</a>
-                <a class="btn" href="https://github.com/qnssl" target="_blank" rel="noopener">GitHub</a>
+                <a class="btn primary" href="assets/Nikita_Kuzhel_CV.pdf" target="_blank" rel="noopener noreferrer">Скачать CV (PDF)</a>
+                <a class="btn" href="https://t.me/qnslll" target="_blank" rel="noopener noreferrer">Написать в Telegram</a>
+                <a class="btn" href="https://github.com/qnssl" target="_blank" rel="noopener noreferrer">GitHub</a>
             </div>
             <div class="facts">
                 <span class="tag">Unity и C#</span>
@@ -144,8 +143,8 @@
     <section id="certs">
         <h2>Сертификаты и курсы</h2>
         <div class="certs">
-            <a class="cert" href="https://github.com/qnssl/qnssl/blob/main/certificates/ibm-content-creation-genai.pdf" target="_blank" rel="noopener"><span>2026 · сертификат</span><h3>Content Creation with Generative AI</h3></a>
-            <a class="cert" href="https://github.com/qnssl/qnssl/blob/main/certificates/ibm-genai-final-assessment.pdf" target="_blank" rel="noopener"><span>2026 · сертификат</span><h3>Generative AI Content Creation, итоговая аттестация</h3></a>
+            <a class="cert" href="https://github.com/qnssl/qnssl/blob/main/certificates/ibm-content-creation-genai.pdf" target="_blank" rel="noopener noreferrer"><span>2026 · сертификат</span><h3>Content Creation with Generative AI</h3></a>
+            <a class="cert" href="https://github.com/qnssl/qnssl/blob/main/certificates/ibm-genai-final-assessment.pdf" target="_blank" rel="noopener noreferrer"><span>2026 · сертификат</span><h3>Generative AI Content Creation, итоговая аттестация</h3></a>
         </div>
     </section>
 
@@ -159,9 +158,9 @@
                 <p>Ищу постоянную работу и проекты, где можно расти в IT и смежных областях.</p>
             </div>
             <div class="cta">
-                <a class="btn primary" href="assets/Nikita_Kuzhel_CV.pdf" target="_blank" rel="noopener">Открыть CV</a>
+                <a class="btn primary" href="assets/Nikita_Kuzhel_CV.pdf" target="_blank" rel="noopener noreferrer">Открыть CV</a>
                 <a class="btn" href="mailto:kuzhalmikita@gmail.com">Написать на почту</a>
-                <a class="btn" href="https://t.me/qnslll" target="_blank" rel="noopener">Telegram</a>
+                <a class="btn" href="https://t.me/qnslll" target="_blank" rel="noopener noreferrer">Telegram</a>
             </div>
         </div>
         <small class="copy">© 2026 Никита Кужель</small>
@@ -184,8 +183,8 @@
     <button class="lb-btn lb-next" id="lb-next" aria-label="Следующее">›</button>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/motion@11.18.2/dist/motion.js"></script>
+<script src="js/vendor/anime.min.js"></script>
+<script src="js/vendor/motion.js"></script>
 <script src="js/projects.js"></script>
 <script src="js/script.js"></script>
 <script src="js/animations.js"></script>

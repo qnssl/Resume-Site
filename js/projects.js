@@ -1,16 +1,3 @@
-// СПИСОК ПРОЕКТОВ. Чтобы добавить работу, скопируйте один блок { ... }, вставьте после запятой и поправьте поля.
-//
-// title   — название
-// text    — короткое описание
-// cat     — категории для фильтров: "code", "game", "web", "pixel", "3d", "photoshop", "illustrator" (можно несколько)
-// cover   — фон карточки: градиент или картинка, например "url(assets/remember-this.png)".
-//           Для альбомов можно оставить "" — тогда обложкой станет первая картинка альбома.
-// label   — надпись на обложке (если нет картинки)
-// status  — подпись вроде "В разработке" (можно "")
-// link    — ссылка на репозиторий (откроется в новой вкладке; "" = без ссылки)
-// tags    — теги технологий
-// gallery — (необязательно) ключ альбома из GALLERIES ниже: тогда карточка открывает альбом
-
 const PROJECTS = [
     {
         title: "CustomJukebox",
@@ -29,7 +16,7 @@ const PROJECTS = [
         cover: "linear-gradient(135deg,#7a3a2a,#13121c)",
         label: "Dragon Mod",
         status: "В разработке",
-        link: "",           // вставьте ссылку на репозиторий
+        link: "",
         tags: ["Java", "Fabric"]
     },
     {
@@ -44,22 +31,22 @@ const PROJECTS = [
     },
     {
         title: "Сайт для оценки фильмов",
-        text: "Описание проекта появится здесь.",   // впишите своё описание
+        text: "Описание проекта появится здесь.",
         cat: ["web", "code"],
         cover: "linear-gradient(135deg,#0f4c5c,#13121c)",
         label: "Оценка фильмов",
         status: "",
-        link: "",           // ссылка на сайт или репозиторий
+        link: "",
         tags: ["HTML", "CSS", "JavaScript"]
     },
     {
         title: "Примеры сайтов",
-        text: "Сайты, которые я делаю: смотрите живые примеры по ссылке.",   // поправьте текст
+        text: "Сайты, которые я делаю: смотрите живые примеры по ссылке.",
         cat: ["web"],
         cover: "linear-gradient(135deg,#7a4a1f,#13121c)",
         label: "Примеры сайтов",
         status: "",
-        link: "",           // ссылка на страницу с примерами
+        link: "",
         tags: ["HTML", "CSS", "JavaScript"]
     },
     {
@@ -100,8 +87,6 @@ const PROJECTS = [
     }
 ];
 
-// АЛЬБОМЫ. Положите файлы в папку assets/... и впишите пути в images (png, jpg, jpeg, gif, webp, в том числе с прозрачным фоном).
-// pixel: true — чёткие пиксели без сглаживания; scale — во сколько раз увеличить маленькие картинки в мозаике.
 const GALLERIES = {
     pixel: {
         title: "Пиксель-арт",
@@ -109,8 +94,6 @@ const GALLERIES = {
         pixel: true,
         scale: 4,
         images: [
-            // "assets/pixel-art/sprite1.png",
-            // "assets/pixel-art/cat.gif"
         ]
     },
     models: {
@@ -119,7 +102,6 @@ const GALLERIES = {
         pixel: false,
         scale: 1,
         images: [
-            // "assets/3d/model1.png"
         ]
     },
     photoshop: {
@@ -128,7 +110,6 @@ const GALLERIES = {
         pixel: false,
         scale: 1,
         images: [
-            // "assets/photoshop/banner1.jpg"
         ]
     },
     illustrator: {
@@ -137,7 +118,6 @@ const GALLERIES = {
         pixel: false,
         scale: 1,
         images: [
-            // "assets/illustrator/logo1.png"
         ]
     }
 };
