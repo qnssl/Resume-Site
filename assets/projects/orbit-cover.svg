@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Orbit solar system model</title>
+  <desc id="desc">Dark orbital visualization with the Sun, planets, orbital rings and a compact simulation control panel.</desc>
+  <defs>
+    <radialGradient id="spaceGlow" cx="0.5" cy="0.52" r="0.55">
+      <stop stop-color="#2b1b0b" stop-opacity="0.7"/>
+      <stop offset="0.24" stop-color="#13222b" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#05070c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="sun" cx="36%" cy="30%">
+      <stop stop-color="#fff2ad"/>
+      <stop offset="0.42" stop-color="#f7a646"/>
+      <stop offset="1" stop-color="#a8441d"/>
+    </radialGradient>
+    <linearGradient id="control" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#131c28" stop-opacity="0.96"/>
+      <stop offset="1" stop-color="#0b111a" stop-opacity="0.94"/>
+    </linearGradient>
+    <filter id="sunGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="24" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="planetShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#000" flood-opacity="0.55"/>
+    </filter>
+    <pattern id="stars" width="150" height="110" patternUnits="userSpaceOnUse">
+      <circle cx="18" cy="22" r="1" fill="#d9e7f2" opacity="0.55"/>
+      <circle cx="98" cy="74" r="0.8" fill="#8aa6bd" opacity="0.48"/>
+      <circle cx="136" cy="40" r="0.7" fill="#f6d99d" opacity="0.42"/>
+      <circle cx="55" cy="96" r="0.6" fill="#d9e7f2" opacity="0.36"/>
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="900" fill="#05070c"/>
+  <rect width="1600" height="900" fill="url(#stars)"/>
+  <rect width="1600" height="900" fill="url(#spaceGlow)"/>
+
+  <text x="92" y="104" fill="#f2f0e9" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" letter-spacing="9">ORBIT</text>
+  <text x="96" y="139" fill="#91a5b5" font-family="Arial, Helvetica, sans-serif" font-size="15" letter-spacing="2">SOLAR SYSTEM / EDUCATIONAL MODEL</text>
+  <path d="M96 164H308" stroke="#e59a4a" stroke-width="3" stroke-linecap="round"/>
+
+  <g fill="none" stroke="#8fa4b6" stroke-opacity="0.22" stroke-width="2">
+    <ellipse cx="785" cy="475" rx="122" ry="48"/>
+    <ellipse cx="785" cy="475" rx="176" ry="70"/>
+    <ellipse cx="785" cy="475" rx="238" ry="94"/>
+    <ellipse cx="785" cy="475" rx="310" ry="123"/>
+    <ellipse cx="785" cy="475" rx="398" ry="158"/>
+    <ellipse cx="785" cy="475" rx="500" ry="198"/>
+    <ellipse cx="785" cy="475" rx="618" ry="245"/>
+    <ellipse cx="785" cy="475" rx="744" ry="294"/>
+  </g>
+  <g fill="none" stroke="#e6b36c" stroke-opacity="0.22" stroke-width="1" stroke-dasharray="3 12">
+    <ellipse cx="785" cy="475" rx="398" ry="158"/>
+    <ellipse cx="785" cy="475" rx="618" ry="245"/>
+  </g>
+
+  <circle cx="785" cy="475" r="92" fill="#f08a31" opacity="0.16" filter="url(#sunGlow)"/>
+  <circle cx="785" cy="475" r="59" fill="url(#sun)" filter="url(#sunGlow)"/>
+  <text x="785" y="575" text-anchor="middle" fill="#efc078" font-family="Arial, Helvetica, sans-serif" font-size="14" letter-spacing="3">SUN</text>
+
+  <g filter="url(#planetShadow)">
+    <circle cx="907" cy="475" r="8" fill="#9b765e"/>
+    <circle cx="961" cy="475" r="13" fill="#c68a58"/>
+    <circle cx="1023" cy="475" r="16" fill="#4b88a2"/>
+    <path d="M1012 471c8-6 18-5 25 1" fill="none" stroke="#b3d9d3" stroke-width="3" opacity="0.75"/>
+    <circle cx="1095" cy="475" r="12" fill="#b6533d"/>
+    <circle cx="1183" cy="475" r="26" fill="#bd8a55"/>
+    <path d="M1160 468c16 8 30 8 46 0M1164 480c13 7 27 7 39 1" fill="none" stroke="#74503b" stroke-width="4" opacity="0.7"/>
+    <ellipse cx="1305" cy="475" rx="43" ry="12" fill="none" stroke="#c6a879" stroke-width="7" stroke-opacity="0.78"/>
+    <circle cx="1305" cy="475" r="24" fill="#d3b27b"/>
+    <circle cx="1420" cy="475" r="19" fill="#719aa2"/>
+    <circle cx="1510" cy="475" r="17" fill="#6c87b0"/>
+  </g>
+
+  <g font-family="Arial, Helvetica, sans-serif" font-size="13" letter-spacing="1">
+    <text x="907" y="450" text-anchor="middle" fill="#a8b9c4">MERCURY</text>
+    <text x="961" y="430" text-anchor="middle" fill="#a8b9c4">VENUS</text>
+    <text x="1023" y="430" text-anchor="middle" fill="#b8d5dc">EARTH</text>
+    <text x="1095" y="450" text-anchor="middle" fill="#d5a18e">MARS</text>
+    <text x="1183" y="420" text-anchor="middle" fill="#e0c193">JUPITER</text>
+    <text x="1305" y="420" text-anchor="middle" fill="#e0c193">SATURN</text>
+  </g>
+
+  <g filter="url(#planetShadow)">
+    <circle cx="560" cy="344" r="11" fill="#c98767"/>
+    <circle cx="420" cy="660" r="15" fill="#b68e70"/>
+    <ellipse cx="420" cy="660" rx="28" ry="8" fill="none" stroke="#bea47d" stroke-width="4" opacity="0.75"/>
+  </g>
+  <text x="560" y="320" text-anchor="middle" fill="#cf9d8a" font-family="Arial, Helvetica, sans-serif" font-size="13" letter-spacing="1">MARS PATH</text>
+
+  <g filter="url(#planetShadow)">
+    <rect x="1040" y="690" width="470" height="126" rx="20" fill="url(#control)" stroke="#a7bfd0" stroke-opacity="0.22"/>
+    <text x="1070" y="726" fill="#9db3c2" font-family="Arial, Helvetica, sans-serif" font-size="12" letter-spacing="3">MODEL CONTROLS</text>
+    <rect x="1070" y="748" width="116" height="38" rx="19" fill="#e59a4a" fill-opacity="0.2" stroke="#e59a4a" stroke-opacity="0.72"/>
+    <circle cx="1092" cy="767" r="7" fill="#e59a4a"/>
+    <text x="1110" y="773" fill="#f2f0e9" font-family="Arial, Helvetica, sans-serif" font-size="14">PAUSE</text>
+    <text x="1218" y="773" fill="#9db3c2" font-family="Arial, Helvetica, sans-serif" font-size="14">SPEED</text>
+    <text x="1282" y="773" fill="#f2f0e9" font-family="Arial, Helvetica, sans-serif" font-size="22">40</text>
+    <text x="1327" y="773" fill="#9db3c2" font-family="Arial, Helvetica, sans-serif" font-size="14">days / sec</text>
+    <path d="M1418 767h58" stroke="#6d879a" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="1450" cy="767" r="9" fill="#d7ebf0" stroke="#8eafbf" stroke-width="3"/>
+  </g>
+
+  <text x="96" y="820" fill="#6f8495" font-family="Arial, Helvetica, sans-serif" font-size="15" letter-spacing="3">ORBITAL MOTION / SCALE IS CONDITIONAL</text>
+</svg>

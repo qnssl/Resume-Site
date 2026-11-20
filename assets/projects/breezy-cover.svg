@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Breezy dark weather dashboard</title>
+  <desc id="desc">Dark Breezy weather dashboard cover with saved cities, current Paris weather and a compact forecast.</desc>
+  <defs>
+    <linearGradient id="page" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#101d25"/>
+      <stop offset="0.56" stop-color="#172832"/>
+      <stop offset="1" stop-color="#182622"/>
+    </linearGradient>
+    <linearGradient id="hero" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#1a3944"/>
+      <stop offset="1" stop-color="#376861"/>
+    </linearGradient>
+    <linearGradient id="surface" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#202d30" stop-opacity="0.98"/>
+      <stop offset="1" stop-color="#253235" stop-opacity="0.9"/>
+    </linearGradient>
+    <radialGradient id="tealGlow" cx="0.78" cy="0.22" r="0.8">
+      <stop stop-color="#49958c" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#49958c" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#000000" flood-opacity="0.32"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#page)"/>
+  <rect width="1600" height="900" fill="url(#tealGlow)"/>
+  <rect x="0" y="0" width="270" height="900" fill="#142229" fill-opacity="0.86"/>
+  <path d="M270 0V900" stroke="#425457" stroke-opacity="0.72" stroke-width="2"/>
+
+  <text x="70" y="88" fill="#edf7f3" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" letter-spacing="4">breezy.</text>
+  <text x="70" y="145" fill="#91aab0" font-family="Arial, Helvetica, sans-serif" font-size="13" letter-spacing="2">YOUR CITIES</text>
+  <text x="204" y="145" text-anchor="end" fill="#91aab0" font-family="Arial, Helvetica, sans-serif" font-size="13">03</text>
+
+  <g font-family="Arial, Helvetica, sans-serif">
+    <rect x="38" y="178" width="194" height="68" rx="16" fill="#2b403f" stroke="#8bc9bd" stroke-opacity="0.45"/>
+    <circle cx="66" cy="212" r="12" fill="#f1c170" fill-opacity="0.92"/>
+    <text x="94" y="207" fill="#edf7f3" font-size="16" font-weight="700">Paris</text>
+    <text x="94" y="228" fill="#91aab0" font-size="12">France</text>
+    <text x="210" y="215" text-anchor="end" fill="#bfd3d0" font-size="13">03:20</text>
+
+    <rect x="38" y="258" width="194" height="68" rx="16" fill="#202d30" stroke="#e6f6f2" stroke-opacity="0.12"/>
+    <circle cx="66" cy="292" r="12" fill="none" stroke="#8bc9bd" stroke-width="2"/>
+    <text x="94" y="287" fill="#c0d7d0" font-size="16" font-weight="700">Tokyo</text>
+    <text x="94" y="308" fill="#91aab0" font-size="12">Japan</text>
+    <text x="210" y="295" text-anchor="end" fill="#91aab0" font-size="13">11:20</text>
+
+    <rect x="38" y="338" width="194" height="68" rx="16" fill="#202d30" stroke="#e6f6f2" stroke-opacity="0.12"/>
+    <circle cx="66" cy="372" r="12" fill="none" stroke="#8bc9bd" stroke-width="2"/>
+    <text x="94" y="367" fill="#c0d7d0" font-size="16" font-weight="700">Reykjavik</text>
+    <text x="94" y="388" fill="#91aab0" font-size="12">Iceland</text>
+    <text x="210" y="375" text-anchor="end" fill="#91aab0" font-size="13">02:20</text>
+  </g>
+
+  <text x="70" y="820" fill="#91aab0" font-family="Arial, Helvetica, sans-serif" font-size="14">Weather, gathered</text>
+  <text x="70" y="844" fill="#91aab0" font-family="Arial, Helvetica, sans-serif" font-size="14">for your day.</text>
+
+  <g filter="url(#shadow)">
+    <rect x="324" y="78" width="1196" height="744" rx="28" fill="#e7f6f2" fill-opacity="0.08" stroke="#e6f6f2" stroke-opacity="0.18"/>
+    <text x="390" y="134" fill="#8bc9bd" font-family="Arial, Helvetica, sans-serif" font-size="13" letter-spacing="3">YOUR WEATHER WORKSHOP</text>
+    <text x="390" y="184" fill="#edf7f3" font-family="Georgia, 'Times New Roman', serif" font-size="42">Paris</text>
+    <text x="390" y="214" fill="#91aab0" font-family="Arial, Helvetica, sans-serif" font-size="15">Friday, 20 November · 03:20 local time</text>
+
+    <rect x="390" y="252" width="1064" height="270" rx="28" fill="url(#hero)" stroke="#b6e2d5" stroke-opacity="0.14"/>
+    <text x="430" y="302" fill="#b6e2d5" font-family="Arial, Helvetica, sans-serif" font-size="13" letter-spacing="2">CURRENT WEATHER</text>
+    <text x="430" y="407" fill="#f1f8f3" font-family="Arial, Helvetica, sans-serif" font-size="110" font-weight="300">18°</text>
+    <text x="438" y="446" fill="#edf7f3" font-family="Arial, Helvetica, sans-serif" font-size="19">Partly cloudy</text>
+    <text x="438" y="478" fill="#b6e2d5" font-family="Arial, Helvetica, sans-serif" font-size="14">Feels like 17°  ·  Min 12°  /  Max 21°</text>
+    <circle cx="1220" cy="350" r="72" fill="#f1c170" fill-opacity="0.96"/>
+    <circle cx="1250" cy="330" r="72" fill="#285555"/>
+    <g fill="#c0d7d0" opacity="0.9">
+      <ellipse cx="1180" cy="405" rx="76" ry="36"/>
+      <ellipse cx="1242" cy="391" rx="78" ry="48"/>
+      <ellipse cx="1302" cy="410" rx="66" ry="32"/>
+      <rect x="1156" y="402" width="178" height="40" rx="20"/>
+    </g>
+    <text x="1394" y="476" text-anchor="end" fill="#b6e2d5" font-family="Arial, Helvetica, sans-serif" font-size="13">France · Europe/Paris</text>
+
+    <rect x="390" y="558" width="1064" height="206" rx="28" fill="#253235" fill-opacity="0.92" stroke="#e6f6f2" stroke-opacity="0.14"/>
+    <text x="430" y="608" fill="#91aab0" font-family="Arial, Helvetica, sans-serif" font-size="13" letter-spacing="2">HOW WEATHER CHANGES</text>
+    <text x="430" y="650" fill="#edf7f3" font-family="Georgia, 'Times New Roman', serif" font-size="30">Next 24 hours</text>
+    <path d="M448 708C540 681 612 727 700 704S850 675 948 710s158-16 240-3 150-9 218-22" fill="none" stroke="#8bc9bd" stroke-width="4"/>
+    <g fill="#8bc9bd">
+      <circle cx="448" cy="708" r="6"/><circle cx="574" cy="706" r="6"/><circle cx="700" cy="704" r="6"/><circle cx="824" cy="694" r="6"/><circle cx="948" cy="710" r="6"/><circle cx="1068" cy="707" r="6"/><circle cx="1188" cy="706" r="6"/><circle cx="1406" cy="685" r="6"/>
+    </g>
+    <text x="430" y="740" fill="#91aab0" font-family="Arial, Helvetica, sans-serif" font-size="13">Now</text>
+    <text x="570" y="740" fill="#91aab0" font-family="Arial, Helvetica, sans-serif" font-size="13">04</text>
+    <text x="695" y="740" fill="#91aab0" font-family="Arial, Helvetica, sans-serif" font-size="13">05</text>
+    <text x="820" y="740" fill="#91aab0" font-family="Arial, Helvetica, sans-serif" font-size="13">06</text>
+    <text x="945" y="740" fill="#91aab0" font-family="Arial, Helvetica, sans-serif" font-size="13">07</text>
+    <text x="1065" y="740" fill="#91aab0" font-family="Arial, Helvetica, sans-serif" font-size="13">08</text>
+    <text x="1185" y="740" fill="#91aab0" font-family="Arial, Helvetica, sans-serif" font-size="13">09</text>
+    <text x="1400" y="740" text-anchor="end" fill="#b6e2d5" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700">18° · 15%</text>
+  </g>
+</svg>

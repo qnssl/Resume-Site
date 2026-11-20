@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Aurora travel planner</title>
+  <desc id="desc">Dark Aurora project cover with a large hero statement and a compact travel planning panel.</desc>
+  <defs>
+    <radialGradient id="auroraGlow" cx="0.78" cy="0.34" r="0.72">
+      <stop offset="0" stop-color="#73e6ca" stop-opacity="0.18"/>
+      <stop offset="0.48" stop-color="#73e6ca" stop-opacity="0.035"/>
+      <stop offset="1" stop-color="#73e6ca" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#16191c" stop-opacity="0.98"/>
+      <stop offset="1" stop-color="#0c0f12" stop-opacity="0.98"/>
+    </linearGradient>
+    <linearGradient id="button" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#8ff0d5"/>
+      <stop offset="1" stop-color="#5fd4bb"/>
+    </linearGradient>
+    <pattern id="stars" width="52" height="52" patternUnits="userSpaceOnUse">
+      <circle cx="6" cy="8" r="1.2" fill="#d9fff5" fill-opacity="0.22"/>
+      <circle cx="38" cy="31" r="0.8" fill="#d9fff5" fill-opacity="0.16"/>
+    </pattern>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#000" flood-opacity="0.38"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="#07080b"/>
+  <rect width="1600" height="900" fill="url(#auroraGlow)"/>
+  <rect width="1600" height="900" fill="url(#stars)" opacity="0.52"/>
+
+  <text x="120" y="170" fill="#8ff0d5" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="600" letter-spacing="7">AURORA</text>
+  <path d="M120 198H280" stroke="#73e6ca" stroke-opacity="0.7" stroke-width="3"/>
+
+  <text x="120" y="360" fill="#f4f1ea" font-family="Georgia, 'Times New Roman', serif" font-size="88" letter-spacing="-3">Build digital</text>
+  <text x="120" y="455" fill="#f4f1ea" font-family="Georgia, 'Times New Roman', serif" font-size="88" letter-spacing="-3">products that feel</text>
+  <text x="120" y="550" fill="#f4f1ea" font-family="Georgia, 'Times New Roman', serif" font-size="88" letter-spacing="-3">effortless</text>
+  <text x="124" y="630" fill="#9b9fa5" font-family="Arial, Helvetica, sans-serif" font-size="24">A thoughtful planner for routes, budgets and days that fit together.</text>
+
+  <path d="M720 175C910 105 1130 150 1330 270" fill="none" stroke="#73e6ca" stroke-opacity="0.24" stroke-width="2" stroke-dasharray="3 14"/>
+  <circle cx="720" cy="175" r="5" fill="#8ff0d5"/>
+  <circle cx="1330" cy="270" r="5" fill="#8ff0d5"/>
+
+  <g filter="url(#softShadow)">
+    <rect x="900" y="360" width="560" height="410" rx="28" fill="url(#panel)" stroke="#d7fff5" stroke-opacity="0.16"/>
+    <text x="944" y="414" fill="#8ff0d5" font-family="Arial, Helvetica, sans-serif" font-size="14" letter-spacing="3">PLAN YOUR TRIP</text>
+    <text x="944" y="462" fill="#f4f1ea" font-family="Georgia, 'Times New Roman', serif" font-size="31">One route, built around you.</text>
+
+    <text x="944" y="505" fill="#9299a0" font-family="Arial, Helvetica, sans-serif" font-size="14">CITY</text>
+    <rect x="944" y="520" width="146" height="42" rx="21" fill="#73e6ca" fill-opacity="0.16" stroke="#73e6ca" stroke-opacity="0.55"/>
+    <text x="1017" y="547" text-anchor="middle" fill="#cffff2" font-family="Arial, Helvetica, sans-serif" font-size="16">Lisbon</text>
+    <rect x="1100" y="520" width="132" height="42" rx="21" fill="#fff" fill-opacity="0.035" stroke="#fff" stroke-opacity="0.13"/>
+    <text x="1166" y="547" text-anchor="middle" fill="#a7adb2" font-family="Arial, Helvetica, sans-serif" font-size="16">Kyoto</text>
+    <rect x="1242" y="520" width="142" height="42" rx="21" fill="#fff" fill-opacity="0.035" stroke="#fff" stroke-opacity="0.13"/>
+    <text x="1313" y="547" text-anchor="middle" fill="#a7adb2" font-family="Arial, Helvetica, sans-serif" font-size="16">Marrakesh</text>
+
+    <text x="944" y="606" fill="#9299a0" font-family="Arial, Helvetica, sans-serif" font-size="14">BUDGET</text>
+    <text x="1384" y="606" text-anchor="end" fill="#f4f1ea" font-family="Arial, Helvetica, sans-serif" font-size="18">1 800 €</text>
+    <rect x="944" y="622" width="440" height="6" rx="3" fill="#293337"/>
+    <rect x="944" y="622" width="252" height="6" rx="3" fill="#73e6ca"/>
+    <circle cx="1196" cy="625" r="10" fill="#baffee" stroke="#73e6ca" stroke-width="4"/>
+
+    <text x="944" y="678" fill="#9299a0" font-family="Arial, Helvetica, sans-serif" font-size="14">DATES</text>
+    <text x="944" y="704" fill="#f4f1ea" font-family="Arial, Helvetica, sans-serif" font-size="17">04 Dec  —  07 Dec</text>
+    <rect x="1200" y="672" width="184" height="48" rx="24" fill="url(#button)"/>
+    <text x="1292" y="702" text-anchor="middle" fill="#07100f" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700">Build route</text>
+  </g>
+
+  <text x="120" y="820" fill="#727980" font-family="Arial, Helvetica, sans-serif" font-size="16" letter-spacing="3">TRAVEL / PRODUCT / INTERFACE</text>
+</svg>
