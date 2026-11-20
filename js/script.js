@@ -1,432 +1,358 @@
 const list = document.getElementById("projects-list");
 const filterBtns = document.querySelectorAll(".filters button");
 
-const io = new IntersectionObserver(entries => entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
-}), { threshold: 0.12 });
-const reveal = el => { el.classList.add("reveal"); io.observe(el); };
+const io =
+    "IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? new IntersectionObserver(
+            (entries) =>
+                entries.forEach((entry) => {
+                  if (entry.isIntersecting) {
+                    entry.target.classList.add("in");
+                    io.unobserve(entry.target);
+                  }
+                }),
+            { threshold: 0.12 },
+        )
+        : null;
+const reveal = (node) => {
+  if (!io) return;
+  node.classList.add("reveal");
+  io.observe(node);
+};
 
 const el = (tag, cls, text) => {
-    const n = document.createElement(tag);
-    if (cls) n.className = cls;
-    if (text !== undefined) n.textContent = text;
-    return n;
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text !== undefined) n.textContent = text;
+  return n;
 };
-const safeUrl = u => (/^https:\/\//i.test(u) ? u : "");
+const safeUrl = (u) => (/^https:\/\//i.test(u) ? u : "");
 
 let curFilter = "all";
 
-function imgUrl(g, name) { return name.includes("/") ? name : g.dir + name; }
+function imgUrl(g, name) {
+  return name.includes("/") ? name : g.dir + name;
+}
 
 function tryLoad(sources, onFound) {
-    if (!sources.length) return;
-    const probe = new Image();
-    probe.onload = () => onFound(sources[0]);
-    probe.onerror = () => tryLoad(sources.slice(1), onFound);
-    probe.src = sources[0];
+  if (!sources.length) return;
+  const probe = new Image();
+  probe.onload = () => onFound(sources[0]);
+  probe.onerror = () => tryLoad(sources.slice(1), onFound);
+  probe.src = sources[0];
 }
 
 function renderProjects(filter) {
-    curFilter = filter;
-    list.replaceChildren();
-    PROJECTS.filter(p => filter === "all" || p.cat.includes(filter)).forEach(p => {
-        const L = LANG === "en" && p.en ? p.en : {};
-        const title = L.title || p.title;
-        const text = L.text || p.text;
-        const label = L.label || p.label;
-        const status = L.status !== undefined ? L.status : p.status;
-        const g = p.gallery ? GALLERIES[p.gallery] : null;
-        const link = safeUrl(p.link);
-        const card = el("article", "proj");
-        const cv = el("div", "cover" + (g && g.pixel ? " pix" : ""), label);
-        cv.style.backgroundImage = p.cover || "linear-gradient(135deg,#34324a,#13121c)";
-        const sources = [];
-        if (p.image) sources.push(p.image);
-        if (g && g.images.length) sources.push(imgUrl(g, g.images[0]));
-        tryLoad(sources, src => { cv.style.backgroundImage = `url("${src}")`; cv.textContent = ""; });
-        const body = el("div", "body");
-        body.append(el("h3", "", title), el("p", "", text));
-        const chips = el("div", "chips");
-        p.tags.forEach(tag => chips.append(el("span", "", tag)));
-        body.append(chips);
-        const act = el("div", "act");
-        if (status) act.append(el("span", "status", status));
-        if (g) {
-            act.append(el("span", "count", g.images.length ? g.images.length + " " + t("works") : t("soon")));
-            const a = el("a", "link", t("openAlbum"));
-            a.href = "#";
-            act.append(a);
-        }
-        if (link) {
-            const a = el("a", "link", t("openProject"));
-            a.href = link; a.target = "_blank"; a.rel = "noopener noreferrer";
-            act.append(a);
-        }
-        card.append(cv, body, act);
-        if (g) {
-            card.dataset.gallery = p.gallery;
-            card.addEventListener("click", e => { e.preventDefault(); openGallery(p.gallery); });
-        } else if (link) {
-            card.classList.add("clickable");
-            card.addEventListener("click", e => { if (!e.target.closest("a")) window.open(link, "_blank", "noopener,noreferrer"); });
-        }
-        list.appendChild(card);
-        reveal(card);
-        if (window.onCardRender) window.onCardRender(card);
+  curFilter = filter;
+  list.replaceChildren();
+  PROJECTS.filter((p) => filter === "all" || p.cat.includes(filter)).forEach((p) => {
+    const L = LANG === "en" && p.en ? p.en : {};
+    const title = L.title || p.title;
+    const text = L.text || p.text;
+    const label = L.label || p.label;
+    const status = L.status !== undefined ? L.status : p.status;
+    const caseStudy = L.case || p.case;
+    const g = p.gallery ? GALLERIES[p.gallery] : null;
+    const link = safeUrl(p.link);
+    const card = el("article", "proj" + (p.featured ? " featured" : ""));
+    card.dataset.project = p.id;
+    const cv = el("div", "cover" + (g && g.pixel ? " pix" : ""), label);
+    if (p.featured) cv.append(el("span", "featured-label", t("featured")));
+    cv.style.backgroundImage = p.cover || "linear-gradient(135deg,#3a3328,#0A0A0A)";
+    cv.style.backgroundPosition = p.imagePosition || "center";
+    const sources = [];
+    if (p.image) sources.push(p.image);
+    if (g && g.images.length) sources.push(imgUrl(g, g.images[0]));
+    tryLoad(sources, (src) => {
+      cv.style.backgroundImage = `url("${src}")`;
+      const featuredLabel = cv.querySelector(".featured-label");
+      cv.replaceChildren(...(featuredLabel ? [featuredLabel] : []));
     });
+    const body = el("div", "body");
+    body.append(el("h3", "", title), el("p", "", text));
+    if (caseStudy) {
+      const note = el("p", "case-study");
+      note.append(
+          el("span", "case-label", caseStudy.label + ": "),
+          document.createTextNode(caseStudy.text),
+      );
+      body.append(note);
+    }
+    const chips = el("div", "chips");
+    p.tags.forEach((tag) => chips.append(el("span", "", tag)));
+    body.append(chips);
+    const act = el("div", "act");
+    if (status) act.append(el("span", "status", status));
+    if (g) {
+      act.append(
+          el("span", "count", g.images.length ? g.images.length + " " + t("works") : t("soon")),
+      );
+      const button = el("button", "link", t("openAlbum"));
+      button.type = "button";
+      button.setAttribute("aria-label", t("openAlbum") + ": " + title);
+      button.addEventListener("click", () => openGallery(p.gallery));
+      act.append(button);
+    }
+    if (link) {
+      const a = el("a", "link", t("openProject"));
+      a.setAttribute("aria-label", t("openProject") + ": " + title);
+      a.href = link;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      act.append(a);
+    }
+    card.append(cv, body, act);
+    if (g) {
+      card.dataset.gallery = p.gallery;
+      card.addEventListener("click", (e) => {
+        if (!e.target.closest("a, button")) openGallery(p.gallery);
+      });
+    } else if (link) {
+      card.classList.add("clickable");
+      card.addEventListener("click", (e) => {
+        if (!e.target.closest("a")) window.open(link, "_blank", "noopener,noreferrer");
+      });
+    }
+    list.appendChild(card);
+    card.style.setProperty("--reveal-delay", `${Math.min(list.children.length - 1, 5) * 55}ms`);
+    reveal(card);
+  });
 }
-filterBtns.forEach(b => b.addEventListener("click", () => {
-    filterBtns.forEach(x => x.setAttribute("aria-pressed", x === b));
-    renderProjects(b.dataset.f);
-}));
+const filterLabels = {
+  all: "fAll",
+  code: "fCode",
+  web: "fWeb",
+  pixel: "fPixel",
+  "3d": "f3d",
+  photoshop: "fPhotoshop",
+  illustrator: "fIllustrator",
+};
+function updateFilterCounts() {
+  filterBtns.forEach((button) => {
+    const key = filterLabels[button.dataset.f];
+    const count = PROJECTS.filter(
+        (p) => button.dataset.f === "all" || p.cat.includes(button.dataset.f),
+    ).length;
+    if (key) button.textContent = `${t(key)} · ${count}`;
+  });
+}
+filterBtns.forEach((b) =>
+    b.addEventListener("click", () => {
+      filterBtns.forEach((x) => x.setAttribute("aria-pressed", x === b));
+      renderProjects(b.dataset.f);
+    }),
+);
 renderProjects("all");
-document.querySelectorAll("h2, .about-text, .facts-list > div, .cert, .tl article, .end").forEach(reveal);
+updateFilterCounts();
+document.addEventListener("langchange", updateFilterCounts);
+document
+    .querySelectorAll("h2, .about-text, .facts-list > div, .cert, .tl article, .end")
+    .forEach(reveal);
 
 const bar = document.getElementById("progress");
-addEventListener("scroll", () => {
-    const h = document.documentElement.scrollHeight - innerHeight;
-    bar.style.width = (h > 0 ? scrollY / h * 100 : 0) + "%";
-}, { passive: true });
+addEventListener(
+    "scroll",
+    () => {
+      const h = document.documentElement.scrollHeight - innerHeight;
+      bar.style.width = (h > 0 ? (scrollY / h) * 100 : 0) + "%";
+    },
+    { passive: true },
+);
 
 const galleryEl = document.getElementById("gallery");
 const mosaic = document.getElementById("mosaic");
 const lightbox = document.getElementById("lightbox");
 const lbImg = document.getElementById("lb-img");
-let curG = null, curI = 0;
+const lbPrev = document.getElementById("lb-prev");
+const lbNext = document.getElementById("lb-next");
+const background = document.querySelectorAll(".skip, header, .rubber-dock-wrap, main, footer");
+let curG = null,
+    curI = 0,
+    lastFocus = null,
+    lightboxFocus = null;
 
 function openGallery(id) {
-    const g = GALLERIES[id];
-    if (!g) return;
-    curG = g;
-    const L = LANG === "en" && g.en ? g.en : g;
-    document.getElementById("g-title").textContent = L.title;
-    document.getElementById("g-text").textContent = L.text;
-    mosaic.replaceChildren();
-    if (!g.images.length) mosaic.append(el("p", "empty", t("empty")));
-    g.images.forEach((name, i) => {
-        const b = document.createElement("button");
-        b.setAttribute("aria-label", t("imgAria") + " " + (i + 1));
-        const img = new Image();
-        img.src = imgUrl(g, name); img.alt = L.title + " " + (i + 1); img.loading = "lazy";
-        if (g.pixel) img.style.imageRendering = "pixelated";
-        img.onload = () => { if (g.scale > 1) img.style.width = img.naturalWidth * g.scale + "px"; };
-        b.style.transform = `rotate(${(Math.random() * 4 - 2).toFixed(1)}deg) translateY(${Math.round(Math.random() * 30 - 15)}px)`;
-        b.onclick = () => openLightbox(i);
-        b.appendChild(img);
-        mosaic.appendChild(b);
-    });
-    galleryEl.hidden = false;
-    galleryEl.scrollTop = 0;
-    document.body.style.overflow = "hidden";
+  const g = GALLERIES[id];
+  if (!g) return;
+  curG = g;
+  const L = LANG === "en" && g.en ? g.en : g;
+  document.getElementById("g-title").textContent = L.title;
+  document.getElementById("g-text").textContent = L.text;
+  mosaic.replaceChildren();
+  if (!g.images.length) mosaic.append(el("p", "empty", t("empty")));
+  g.images.forEach((name, i) => {
+    const b = document.createElement("button");
+    b.setAttribute("aria-label", t("imgAria") + " " + (i + 1));
+    const img = new Image();
+    img.src = imgUrl(g, name);
+    img.alt = L.title + " " + (i + 1);
+    img.loading = "lazy";
+    if (g.pixel) img.style.imageRendering = "pixelated";
+    img.onload = () => {
+      if (g.scale > 1) img.style.width = img.naturalWidth * g.scale + "px";
+    };
+    b.style.transform = `rotate(${(Math.random() * 4 - 2).toFixed(1)}deg) translateY(${Math.round(Math.random() * 30 - 15)}px)`;
+    b.onclick = () => openLightbox(i);
+    b.appendChild(img);
+    mosaic.appendChild(b);
+  });
+  galleryEl.hidden = false;
+  galleryEl.classList.remove("motion-open");
+  requestAnimationFrame(() => galleryEl.classList.add("motion-open"));
+  galleryEl.scrollTop = 0;
+  lastFocus = document.activeElement;
+  background.forEach((node) => {
+    node.inert = true;
+  });
+  document.getElementById("g-back").focus();
+  document.body.style.overflow = "hidden";
 }
-function closeGallery() { galleryEl.hidden = true; document.body.style.overflow = ""; }
+function closeGallery() {
+  galleryEl.classList.remove("motion-open");
+  galleryEl.hidden = true;
+  document.body.style.overflow = "";
+  background.forEach((node) => {
+    node.inert = false;
+  });
+  if (lastFocus) lastFocus.focus();
+}
 
 function openLightbox(i) {
-    curI = (i + curG.images.length) % curG.images.length;
-    lbImg.style.width = "";
-    lbImg.style.imageRendering = curG.pixel ? "pixelated" : "auto";
-    lbImg.onload = () => {
-        if (curG.pixel) {
-            const k = Math.max(1, Math.floor(Math.min(innerWidth * 0.8 / lbImg.naturalWidth, innerHeight * 0.8 / lbImg.naturalHeight)));
-            lbImg.style.width = lbImg.naturalWidth * k + "px";
-        }
-    };
-    lbImg.src = imgUrl(curG, curG.images[curI]);
-    lightbox.hidden = false;
+  if (!curG || !curG.images.length) return;
+  const opening = lightbox.hidden;
+  if (opening) lightboxFocus = document.activeElement;
+  const hasNavigation = curG.images.length > 1;
+  lbPrev.hidden = !hasNavigation;
+  lbNext.hidden = !hasNavigation;
+  curI = (i + curG.images.length) % curG.images.length;
+  lbImg.style.width = "";
+  lbImg.style.imageRendering = curG.pixel ? "pixelated" : "auto";
+  lbImg.onload = () => {
+    if (curG.pixel) {
+      const k = Math.max(
+          1,
+          Math.floor(
+              Math.min(
+                  (innerWidth * 0.8) / lbImg.naturalWidth,
+                  (innerHeight * 0.8) / lbImg.naturalHeight,
+              ),
+          ),
+      );
+      lbImg.style.width = lbImg.naturalWidth * k + "px";
+    }
+  };
+  lbImg.src = imgUrl(curG, curG.images[curI]);
+  const title = LANG === "en" && curG.en ? curG.en.title : curG.title;
+  lbImg.alt = title + " " + (curI + 1);
+  lightbox.hidden = false;
+  lightbox.classList.remove("motion-open");
+  requestAnimationFrame(() => lightbox.classList.add("motion-open"));
+  galleryEl.inert = true;
+  if (opening) document.getElementById("lb-close").focus();
+}
+function closeLightbox() {
+  lightbox.classList.remove("motion-open");
+  lightbox.hidden = true;
+  galleryEl.inert = false;
+  if (lightboxFocus) lightboxFocus.focus();
 }
 document.getElementById("g-back").onclick = closeGallery;
-document.getElementById("lb-close").onclick = () => lightbox.hidden = true;
-document.getElementById("lb-prev").onclick = () => openLightbox(curI - 1);
-document.getElementById("lb-next").onclick = () => openLightbox(curI + 1);
-lightbox.addEventListener("click", e => { if (e.target === lightbox) lightbox.hidden = true; });
-addEventListener("keydown", e => {
-    if (!lightbox.hidden) {
-        if (e.key === "Escape") lightbox.hidden = true;
-        if (e.key === "ArrowLeft") openLightbox(curI - 1);
-        if (e.key === "ArrowRight") openLightbox(curI + 1);
-    } else if (!galleryEl.hidden && e.key === "Escape") closeGallery();
+document.getElementById("lb-close").onclick = closeLightbox;
+lbPrev.onclick = () => openLightbox(curI - 1);
+lbNext.onclick = () => openLightbox(curI + 1);
+lightbox.addEventListener("click", (e) => {
+  if (e.target === lightbox) closeLightbox();
 });
-
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-const overlay = document.getElementById("overlay");
-const msg = document.getElementById("msg");
-const scoreEl = document.getElementById("score");
-const levelEl = document.getElementById("level");
-const bestEl = document.getElementById("best");
-const W = canvas.width, H = canvas.height;
-
-const GOOD = ["C#", "Java", "Unity", "Blender", "Git", "HTML", "CSS", "JavaScript", "Claude", "Recraft"];
-const COLORS = ["#8f83ff", "#ffb454", "#4ade80", "#60a5fa"];
-const LEVEL_ACCENTS = ["#8f83ff", "#60a5fa", "#4ade80", "#ffb454", "#ff9ecb"];
-const BAD = "#ff6b81", GOLD = "#ffd966", HEART = "#ff9ecb";
-
-let best = 0;
-try { best = +localStorage.getItem("bestScore") || 0; } catch (e) {}
-const showBest = () => bestEl.textContent = best ? t("best") + best : "";
-showBest();
-
-let items, parts, floats, stars, player, score, lives, combo, level, stage, lastShift, running, last, spawnT, lastEnd = null;
-
-function initStars() {
-    stars = Array.from({ length: 45 }, () => ({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.4 + .3, v: 8 + Math.random() * 25 }));
-}
-function setAccent(c) { document.documentElement.style.setProperty("--accent", c); }
-
-function reset() {
-    items = []; parts = []; floats = [];
-    player = { x: W / 2, w: 70, h: 14 };
-    score = 0; lives = 3; combo = 0; level = 1; stage = 0; lastShift = performance.now(); spawnT = 0;
-    scoreEl.textContent = 0; levelEl.textContent = t("level") + " 1";
-    setAccent(LEVEL_ACCENTS[0]);
-    initStars();
-}
-
-function spawn() {
-    const r = Math.random();
-    let type = "skill";
-    if (r < 0.25) type = "bug";
-    else if (r < 0.30 && lives < 3) type = "heart";
-    else if (r < 0.35) type = "star";
-    const text = type === "bug" ? "bug" : type === "heart" ? "+♥" : type === "star" ? "★ +5" : GOOD[Math.floor(Math.random() * GOOD.length)];
-    ctx.font = "600 15px Onest, sans-serif";
-    const w = ctx.measureText(text).width + 22;
-    items.push({
-        type, text, w: type === "bug" ? 64 : w, h: type === "bug" ? 32 : 26,
-        x: w / 2 + Math.random() * (W - w), y: -20,
-        v: 110 + Math.random() * 60 + score * 2.5 + level * 6,
-        color: type === "bug" ? BAD : type === "heart" ? HEART : type === "star" ? GOLD : COLORS[Math.floor(Math.random() * COLORS.length)]
-    });
-}
-
-function burst(x, y, color, n) {
-    for (let i = 0; i < n; i++) {
-        const a = Math.random() * Math.PI * 2, s = 40 + Math.random() * 120;
-        parts.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 40, life: 0.6, color });
+addEventListener("keydown", (e) => {
+  if (!lightbox.hidden) {
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowLeft" && curG?.images.length > 1) {
+      e.preventDefault();
+      openLightbox(curI - 1);
     }
-}
-function floatText(x, y, text, color) { floats.push({ x, y, text, color, life: 0.9 }); }
-function pulseChip(text) {
-    document.querySelectorAll(".chips span").forEach(c => {
-        if (c.textContent === text) { c.classList.remove("pulse"); void c.offsetWidth; c.classList.add("pulse"); }
-    });
-}
-function addScore(n) {
-    score += n;
-    scoreEl.textContent = score;
-    const lv = 1 + Math.floor(Math.sqrt(score / 6));
-    if (lv > level) {
-        level = lv;
-        levelEl.textContent = t("level") + " " + level;
-        floatText(W / 2, H / 2, t("levelUp") + " " + level, "#ecebf5");
-        const st = level - 1;
-        if (st > stage && performance.now() - lastShift > 10000) {
-            stage = st;
-            lastShift = performance.now();
-            setAccent(LEVEL_ACCENTS[stage % LEVEL_ACCENTS.length]);
-        }
+    if (e.key === "ArrowRight" && curG?.images.length > 1) {
+      e.preventDefault();
+      openLightbox(curI + 1);
     }
-}
-
-function pill(x, y, w, h, r) { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); }
-
-function dot(x, y, r, color) { ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fillStyle = color; ctx.fill(); }
-function drawBug(it) {
-    const w = it.w, h = it.h, t = performance.now() / 180;
-    ctx.save();
-    ctx.translate(it.x, it.y);
-    ctx.lineCap = "round"; ctx.lineWidth = 2.5; ctx.strokeStyle = BAD;
-    ctx.shadowColor = BAD; ctx.shadowBlur = 14;
-    for (let i = -2; i <= 2; i++) {
-        const bx = i * 11;
-        ctx.beginPath();
-        ctx.moveTo(bx, h / 2 - 3);
-        ctx.quadraticCurveTo(bx + Math.sin(t + i) * 7, h / 2 + 8, bx + Math.sin(t * 1.3 + i) * 9, h / 2 + 17);
-        ctx.stroke();
-    }
-    ctx.beginPath();
-    ctx.moveTo(-10, -h / 2 + 2); ctx.lineTo(-16, -h / 2 - 9);
-    ctx.moveTo(10, -h / 2 + 2); ctx.lineTo(16, -h / 2 - 9);
-    ctx.stroke();
-    pill(-w / 2, -h / 2, w, h, h / 2);
-    ctx.fillStyle = BAD; ctx.fill();
-    ctx.shadowBlur = 0;
-    [-1, 1].forEach(s => {
-        const ex = s * (w / 2 - 14);
-        dot(ex, 0, 4.2, "#fff"); dot(ex + s * -0.8, 1, 1.9, "#13121c");
-        ctx.strokeStyle = "#13121c"; ctx.lineWidth = 2;
-        ctx.beginPath(); ctx.moveTo(ex + s * 6, -7); ctx.lineTo(ex - s * 5, -3); ctx.stroke();
-    });
-    ctx.fillStyle = "#13121c"; ctx.font = "700 14px Onest, sans-serif";
-    ctx.textAlign = "center"; ctx.textBaseline = "middle";
-    ctx.fillText("bug", 0, 1);
-    ctx.restore();
-}
-
-function draw() {
-    ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = "rgba(236,235,245,.5)";
-    stars.forEach(s => { ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 7); ctx.fill(); });
-    ctx.font = "600 15px Onest, sans-serif";
-    ctx.textAlign = "center"; ctx.textBaseline = "middle";
-    items.forEach(it => {
-        if (it.type === "bug") return drawBug(it);
-        pill(it.x - it.w / 2, it.y - it.h / 2, it.w, it.h, 13);
-        ctx.fillStyle = it.color + "33"; ctx.fill();
-        ctx.strokeStyle = it.color; ctx.lineWidth = 1.5; ctx.stroke();
-        ctx.fillStyle = it.color; ctx.fillText(it.text, it.x, it.y + 1);
-    });
-    parts.forEach(p => { ctx.globalAlpha = Math.max(p.life / 0.6, 0); ctx.fillStyle = p.color; ctx.fillRect(p.x, p.y, 3, 3); });
-    ctx.globalAlpha = 1;
-    floats.forEach(f => { ctx.globalAlpha = Math.min(f.life, 1); ctx.fillStyle = f.color; ctx.fillText(f.text, f.x, f.y); });
-    ctx.globalAlpha = 1;
-    ctx.save();
-    if (combo >= 5) { ctx.shadowColor = LEVEL_ACCENTS[stage % LEVEL_ACCENTS.length]; ctx.shadowBlur = 16; }
-    pill(player.x - player.w / 2, H - 34, player.w, player.h, 7);
-    ctx.fillStyle = "#ecebf5"; ctx.fill();
-    ctx.restore();
-    ctx.textAlign = "left"; ctx.fillStyle = BAD;
-    ctx.fillText("♥".repeat(lives), 12, 20);
-    if (combo >= 3) { ctx.textAlign = "right"; ctx.fillStyle = GOLD; ctx.fillText(t("combo") + Math.min(1 + Math.floor(combo / 5), 4), W - 12, 20); }
-}
-
-function loop(t) {
-    if (!running) return;
-    const dt = Math.min((t - last) / 1000, 0.05);
-    last = t;
-    spawnT -= dt;
-    if (spawnT <= 0) { spawn(); spawnT = Math.max(0.3, 0.9 - score * 0.008); }
-    items.forEach(it => it.y += it.v * dt);
-    stars.forEach(s => { s.y += s.v * dt; if (s.y > H) { s.y = 0; s.x = Math.random() * W; } });
-    parts.forEach(p => { p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 220 * dt; p.life -= dt; });
-    parts = parts.filter(p => p.life > 0);
-    floats.forEach(f => { f.y -= 30 * dt; f.life -= dt; });
-    floats = floats.filter(f => f.life > 0);
-
-    const py = H - 34;
-    items = items.filter(it => {
-        const hit = it.y + it.h / 2 >= py && it.y - it.h / 2 <= py + player.h && Math.abs(it.x - player.x) < (it.w + player.w) / 2;
-        if (!hit) return it.y < H + 30;
-        if (it.type === "bug") {
-            lives--; combo = 0;
-            burst(it.x, it.y, BAD, 14); floatText(it.x, it.y - 20, "-1", BAD);
-        } else if (it.type === "heart") {
-            lives = Math.min(3, lives + 1);
-            burst(it.x, it.y, HEART, 10); floatText(it.x, it.y - 20, t("life"), HEART);
-        } else if (it.type === "star") {
-            combo++; addScore(5);
-            burst(it.x, it.y, GOLD, 16); floatText(it.x, it.y - 20, "+5", GOLD);
-        } else {
-            combo++;
-            const m = Math.min(1 + Math.floor(combo / 5), 4);
-            addScore(m);
-            burst(it.x, it.y, it.color, 8); floatText(it.x, it.y - 20, "+" + m, it.color);
-            pulseChip(it.text);
-        }
-        return false;
-    });
-    draw();
-    if (lives <= 0) return end();
-    requestAnimationFrame(loop);
-}
-
-function start() {
-    reset();
-    overlay.hidden = true;
-    running = true;
-    canvas.classList.add("playing");
-    last = performance.now();
-    requestAnimationFrame(loop);
-}
-
-function end() {
-    running = false;
-    canvas.classList.remove("playing");
-    if (score > best) { best = score; try { localStorage.setItem("bestScore", best); } catch (e) {} }
-    showBest();
-    lastEnd = { score, level };
-    syncGameText();
-    overlay.hidden = false;
-}
-
-function moveTo(x0) {
-    const r = canvas.getBoundingClientRect();
-    const x = (x0 - r.left) * (W / r.width);
-    player.x = Math.max(player.w / 2, Math.min(W - player.w / 2, x));
-}
-canvas.addEventListener("pointermove", e => { if (running) moveTo(e.clientX); });
-canvas.addEventListener("pointerdown", e => { if (running) moveTo(e.clientX); });
-addEventListener("keydown", e => {
-    if (!running) return;
-    if (e.key === "ArrowLeft" || e.key === "a") { player.x = Math.max(player.w / 2, player.x - 28); e.preventDefault(); }
-    if (e.key === "ArrowRight" || e.key === "d") { player.x = Math.min(W - player.w / 2, player.x + 28); e.preventDefault(); }
-});
-document.getElementById("start").addEventListener("click", start);
-
-reset(); draw();
-
-const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
-let sTarget = scrollY, sCurrent = scrollY, sRaf = null;
-const sMax = () => document.documentElement.scrollHeight - innerHeight;
-
-function sTick() {
-    sCurrent += (sTarget - sCurrent) * 0.1;
-    if (Math.abs(sTarget - sCurrent) < 0.5) { sCurrent = sTarget; sRaf = null; }
-    scrollTo({ top: sCurrent, behavior: "instant" });
-    if (sRaf) sRaf = requestAnimationFrame(sTick);
-}
-function smoothTo(y) {
-    sTarget = Math.max(0, Math.min(y, sMax()));
-    if (reduceMotion) { scrollTo({ top: sTarget, behavior: "instant" }); return; }
-    if (!sRaf) { sCurrent = scrollY; sRaf = requestAnimationFrame(sTick); }
-}
-addEventListener("wheel", e => {
-    if (reduceMotion || e.ctrlKey || !galleryEl.hidden || !lightbox.hidden) return;
-    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+  } else if (!galleryEl.hidden && e.key === "Escape") closeGallery();
+  if (e.key !== "Tab") return;
+  const dialog = !lightbox.hidden ? lightbox : !galleryEl.hidden ? galleryEl : null;
+  if (!dialog) return;
+  const focusable = [
+    ...dialog.querySelectorAll('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'),
+  ].filter((node) => node.getClientRects().length);
+  if (!focusable.length) return;
+  const first = focusable[0],
+      last = focusable[focusable.length - 1];
+  if (e.shiftKey && document.activeElement === first) {
     e.preventDefault();
-    if (!sRaf) sTarget = scrollY;
-    smoothTo(sTarget + (e.deltaMode === 1 ? e.deltaY * 32 : e.deltaY));
-}, { passive: false });
-addEventListener("scroll", () => { if (!sRaf) { sTarget = scrollY; sCurrent = scrollY; } }, { passive: true });
-document.addEventListener("click", e => {
-    const a = e.target.closest('a[href^="#"]');
-    if (!a || a.getAttribute("href").length < 2) return;
-    const el = document.querySelector(a.getAttribute("href"));
-    if (!el) return;
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
     e.preventDefault();
-    smoothTo(a.getAttribute("href") === "#top" ? 0 : el.getBoundingClientRect().top + scrollY - 72);
+    first.focus();
+  }
 });
 
-const menuBtn = document.getElementById("menu-btn");
-const navEl = document.getElementById("main-nav");
-const closeMenu = () => { navEl.classList.remove("open"); menuBtn.setAttribute("aria-expanded", "false"); };
-menuBtn.addEventListener("click", () => menuBtn.setAttribute("aria-expanded", navEl.classList.toggle("open")));
-navEl.querySelectorAll("a").forEach(a => a.addEventListener("click", closeMenu));
-addEventListener("resize", () => { if (innerWidth > 860) closeMenu(); });
+document.addEventListener("langchange", () => renderProjects(curFilter));
 
-let touchX = null;
-lightbox.addEventListener("touchstart", e => { touchX = e.touches[0].clientX; }, { passive: true });
-lightbox.addEventListener("touchend", e => {
-    if (touchX === null) return;
-    const dx = e.changedTouches[0].clientX - touchX;
-    touchX = null;
-    if (Math.abs(dx) > 50) openLightbox(curI + (dx < 0 ? 1 : -1));
+document.addEventListener("pointermove", (event) => {
+  const card = event.target.closest && event.target.closest(".proj");
+  if (!card) return;
+  const bounds = card.getBoundingClientRect();
+  card.style.setProperty("--mx", event.clientX - bounds.left + "px");
+  card.style.setProperty("--my", event.clientY - bounds.top + "px");
+  if (motionOK && (card.classList.contains("clickable") || card.dataset.gallery)) {
+    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+    card.style.setProperty("--tilt-x", `${(x * 2.4).toFixed(2)}deg`);
+    card.style.setProperty("--tilt-y", `${(-y * 2.4).toFixed(2)}deg`);
+  }
 });
+document.addEventListener(
+    "pointerleave",
+    (event) => {
+      const card = event.target.closest && event.target.closest(".proj");
+      if (card) {
+        card.style.removeProperty("--tilt-x");
+        card.style.removeProperty("--tilt-y");
+      }
+    },
+    true,
+);
 
-const spy = new IntersectionObserver(es => es.forEach(e => {
-    if (!e.isIntersecting) return;
-    document.querySelectorAll("header nav a").forEach(a =>
-        a.setAttribute("aria-current", a.getAttribute("href") === "#" + e.target.id ? "true" : "false"));
-}), { rootMargin: "-40% 0px -55% 0px" });
-document.querySelectorAll("main section[id]").forEach(sec => spy.observe(sec));
-
-const startBtn = document.getElementById("start");
-function overText() { return t("over").replace("{s}", lastEnd.score).replace("{l}", lastEnd.level); }
-function syncGameText() {
-    startBtn.textContent = lastEnd ? t("again") : t("start");
-    msg.textContent = lastEnd ? overText() : t("intro");
-    levelEl.textContent = t("level") + " " + (level || 1);
-    showBest();
+const motionOK = matchMedia(
+    "(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)",
+).matches;
+if (motionOK) {
+  document.querySelectorAll(".btn, .lang-btn").forEach((button) => {
+    button.addEventListener("pointermove", (event) => {
+      const bounds = button.getBoundingClientRect();
+      const x = (event.clientX - bounds.left - bounds.width / 2) / bounds.width;
+      const y = (event.clientY - bounds.top - bounds.height / 2) / bounds.height;
+      button.style.transform = `translate(${(x * 7).toFixed(1)}px, ${(y * 5).toFixed(1)}px)`;
+    });
+    button.addEventListener("pointerleave", () => {
+      button.style.transform = "";
+    });
+  });
+  const orbs = [...document.querySelectorAll(".bg-orbs i")];
+  let parallaxFrame = 0;
+  let pointerX = 0,
+      pointerY = 0;
+  addEventListener(
+      "pointermove",
+      (event) => {
+        pointerX = (event.clientX / innerWidth - 0.5) * 2;
+        pointerY = (event.clientY / innerHeight - 0.5) * 2;
+        if (parallaxFrame) return;
+        parallaxFrame = requestAnimationFrame(() => {
+          parallaxFrame = 0;
+          orbs.forEach((orb, i) => {
+            const amount = (i + 1) * 5;
+            orb.style.transform = `translate3d(${(pointerX * amount).toFixed(1)}px, ${(pointerY * amount).toFixed(1)}px, 0)`;
+          });
+        });
+      },
+      { passive: true },
+  );
 }
-document.addEventListener("langchange", () => { renderProjects(curFilter); syncGameText(); });
-syncGameText();
